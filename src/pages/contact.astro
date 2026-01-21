@@ -1,0 +1,393 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+
+const sp = Astro.url.searchParams;
+
+// Confirmation après envoi
+const sent = sp.get("sent") === "1"; const error = sp.get("error") === "1";
+
+// Source (utile pour trier)
+const source = sp.get("from") ? `contact:${sp.get("from")}` : "contact-page";
+
+// Pré-sélection du sujet selon l’URL
+// - depuis ta home : /contact?from=home&diagnostic=1
+// - depuis offres : /contact?from=offres&offer=crm|relances|base
+const preTopic =
+  (sp.get("diagnostic") === "1" && "diagnostic") ||
+  (sp.get("topic") && sp.get("topic")) ||
+  (() => {
+    const offer = sp.get("offer");
+    if (offer === "crm") return "crm";
+    if (offer === "relances") return "relances";
+    if (offer === "base") return "base";
+    return "diagnostic";
+  })();
+
+const topics = [
+  { value: "diagnostic", label: "Faire le point (15 min) — par où commencer ?" },
+  { value: "crm", label: "CRM simple (suivi commercial clair)" },
+  { value: "relances", label: "Relances automatiques (propres, sans spam)" },
+  { value: "base", label: "Nettoyage / structuration de base (clients & prospects)" },
+  { value: "audit", label: "Audit marketing / prospection (si besoin ensuite)" },
+  { value: "autre", label: "Autre / question" },
+];
+
+// JSON-LD (SEO / GEO léger mais propre)
+const SITE = "https://www.upstrategia.fr";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/` },
+    { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE}/contact` },
+  ],
+};
+
+const contactJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact - UpStrategia",
+  url: `${SITE}/contact`,
+  about: {
+    "@type": "Organization",
+    name: "UpStrategia",
+    url: SITE,
+    email: "contact@upstrategia.fr",
+    areaServed: "FR",
+  },
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "UpStrategia",
+  url: SITE,
+  email: "contact@upstrategia.fr",
+  areaServed: "FR",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: geo.city,
+    addressRegion: geo.region,
+    addressCountry: geo.country,
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Offres UpStrategia",
+    itemListElement: [
+      { "@type": "Offer", name: "CRM simple", url: `${SITE}/offres/crm-simple` },
+      { "@type": "Offer", name: "Relances automatiques", url: `${SITE}/offres/relances-automatiques` },
+      { "@type": "Offer", name: "Base de données propre", url: `${SITE}/offres/base-donnees-propre` },
+    ],
+  },
+};
+
+const faq = [
+  {
+    q: "C’est vraiment 15 minutes ?",
+    a: "Oui. L’objectif est simple : comprendre votre situation, clarifier la prochaine étape, et éviter de partir dans tous les sens.",
+  },
+  {
+    q: "Vous répondez sous combien de temps ?",
+    a: "Je réponds en général sous 48h (hors périodes exceptionnelles).",
+  },
+  {
+    q: "Je n’ai pas de CRM / je suis sur Excel : c’est OK ?",
+    a: "Oui. Justement : on peut démarrer par une base propre et un système simple, puis évoluer si besoin.",
+  },
+  {
+    q: "Relances automatiques = spam ?",
+    a: "Non. Ici on parle de relances propres : rappels, messages courts, timing cohérent. Le but est d’être régulier, pas agressif.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout
+  title={`Contact – CRM simple, relances & base (TPE/PME B2B) – ${geo.city} | UpStrategia`}
+  description={`Contactez UpStrategia : CRM simple, relances automatiques sans spam, nettoyage de base clients/prospects. Basée à ${geo.city} (${geo.region}), visio ${geo.country}.`}
+  canonical="/contact"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(contactJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- BREADCRUMBS -->
+    <nav class="pt-8" aria-label="Fil d’Ariane">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:underline">Accueil</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li class="text-[var(--text-main)] font-medium">Contact</li>
+      </ol>
+    </nav>
+
+    <!-- HERO -->
+    <section class="py-10 sm:py-14">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
+
+          <!-- Colonne gauche -->
+          <div>
+            <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Contact</p>
+
+            <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+              On fait le point en 15 minutes (simplement)
+            </h1>
+
+            <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
+              En 15 minutes, on clarifie votre situation et la prochaine étape simple.
+              Le plus souvent, ça tourne autour de : <strong>CRM</strong>, <strong>relances</strong>, <strong>base de contacts</strong>.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+              <h2 class="text-sm font-semibold text-[var(--brand-blue)]">Ce que vous obtenez</h2>
+              <ul class="mt-4 space-y-3 text-sm text-[var(--text-muted)]">
+                {[
+                  "Une recommandation claire : quoi faire, dans quel ordre.",
+                  "Un plan simple (pas un chantier).",
+                  "Si c’est pertinent : une proposition concrète (CRM / relances / base).",
+                ].map((x) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+                <p class="text-sm font-medium text-[var(--text-main)]">Réponse rapide</p>
+                <p class="mt-1 text-sm text-[var(--text-muted)]">Sous 48h (en général).</p>
+              </div>
+              <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+                <p class="text-sm font-medium text-[var(--text-main)]">Pas de spam</p>
+                <p class="mt-1 text-sm text-[var(--text-muted)]">Juste une réponse à votre demande.</p>
+              </div>
+            </div>
+
+            <p class="mt-6 text-sm text-[var(--text-muted)]">
+              Basée à <strong>{geo.city}</strong> ({geo.region}) — accompagnement en visio partout en {geo.country}.
+            </p>
+
+            <div class="mt-6 text-sm text-[var(--text-muted)]">
+              <p class="font-medium text-[var(--text-main)]">Alternative simple</p>
+              <p class="mt-1">
+                Vous pouvez aussi écrire à :
+                <a class="font-medium text-[var(--brand-copper)] hover:underline" href="mailto:contact@upstrategia.fr">
+                  contact@upstrategia.fr
+                </a>
+              </p>
+            </div>
+          </div>
+
+<!-- Colonne droite : formulaire -->
+<div class="rounded-3xl border border-[var(--border-soft)] bg-white p-6 sm:p-8 shadow-sm">
+
+  {error && (
+    <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5">
+      <p class="text-sm font-semibold text-red-800">Erreur d’envoi</p>
+      <p class="mt-2 text-sm text-red-800/80">
+        Votre message n’a pas pu être envoyé. Réessayez ou écrivez à
+        <a href="mailto:contact@upstrategia.fr" class="underline ml-1">
+          contact@upstrategia.fr
+        </a>.
+      </p>
+    </div>
+  )}
+
+  {sent && (
+    <div class="mb-6 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-5">
+      <p class="text-sm font-semibold text-[var(--brand-blue)]">Message envoyé</p>
+      <p class="mt-2 text-sm text-[var(--text-muted)]">
+        Merci. Je reviens vers vous sous 48h (en général).
+      </p>
+    </div>
+  )}
+
+
+            <div class="mb-6 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-5">
+              <p class="text-sm font-medium text-[var(--text-main)]">Pour gagner du temps</p>
+              <p class="mt-2 text-sm text-[var(--text-muted)]">
+                Dans votre message, indiquez si possible :
+              </p>
+              <ul class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+                <li>• votre activité + votre cible (en 1 phrase)</li>
+                <li>• ce qui bloque aujourd’hui (CRM / relances / base)</li>
+                <li>• ce que vous voulez obtenir (ex : “ne plus oublier de relancer”)</li>
+              </ul>
+            </div>
+
+            <form method="POST" action="/api/contact" class="space-y-4">
+              <!-- Honeypot anti-spam -->
+              <div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+                <label>
+                  Ne pas remplir
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+                </label>
+              </div>
+
+              <!-- Contexte -->
+              <input type="hidden" name="source" value={source} />
+
+              <div>
+                <label class="block text-sm font-medium text-[var(--text-main)]" for="name">Nom</label>
+                <input
+                  id="name"
+                  name="name"
+                  required
+                  autoComplete="name"
+                  class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                  placeholder="Votre nom"
+                />
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="block text-sm font-medium text-[var(--text-main)]" for="email">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                    placeholder="vous@entreprise.fr"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-[var(--text-main)]" for="phone">
+                    Téléphone <span class="text-xs text-[var(--text-muted)]">(optionnel)</span>
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                    placeholder="06 00 00 00 00"
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="block text-sm font-medium text-[var(--text-main)]" for="company">
+                    Entreprise <span class="text-xs text-[var(--text-muted)]">(optionnel)</span>
+                  </label>
+                  <input
+                    id="company"
+                    name="company"
+                    class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                    placeholder="Nom de votre entreprise"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-[var(--text-main)]" for="url">
+                    Site / LinkedIn <span class="text-xs text-[var(--text-muted)]">(optionnel)</span>
+                  </label>
+                  <input
+                    id="url"
+                    name="url"
+                    type="url"
+                    class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                    placeholder="https://…"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-[var(--text-main)]" for="topic">Sujet</label>
+                <select
+                  id="topic"
+                  name="topic"
+                  defaultValue={preTopic}
+                  class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                >
+                  {topics.map((t) => (
+                    <option value={t.value}>{t.label}</option>
+                  ))}
+                </select>
+                <p class="mt-2 text-xs text-[var(--text-muted)]">
+                  Astuce : si vous venez d’une page offre, le sujet est déjà pré-sélectionné.
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-[var(--text-main)]" for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows="6"
+                  class="mt-2 w-full rounded-xl border border-[var(--border-soft)] bg-white px-4 py-3 text-sm text-[var(--text-main)] outline-none focus:ring-2 focus:ring-[var(--brand-copper)]"
+                  placeholder="En 2–3 phrases : activité + cible, ce qui bloque aujourd’hui, et ce que vous voulez obtenir."
+                ></textarea>
+                <p class="mt-2 text-xs text-[var(--text-muted)]">
+                  Si vous pouvez, ajoutez votre site / LinkedIn (ou un exemple de cible). Ça accélère la réponse.
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                class="inline-flex w-full items-center justify-center rounded-xl bg-[var(--brand-copper)] px-5 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+              >
+                Envoyer
+              </button>
+
+              <p class="text-xs text-[var(--text-muted)]">
+                En envoyant ce formulaire, vous acceptez d’être recontacté(e) par email. Pas de spam.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (réduction de friction + SEO) -->
+    <section class="pb-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Questions fréquentes</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Mini GEO -->
+    <section class="pb-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          CRM & relances — depuis {geo.city} ({geo.region}) — visio {geo.country}
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
+          J’accompagne des dirigeants de TPE/PME B2B : CRM simple, relances propres et base clients/prospects exploitable.
+          La plupart des missions se font en visio, avec possibilité de présentiel à Rennes et alentours selon le projet.
+        </p>
+      </div>
+    </section>
+  </main>
+</Layout>

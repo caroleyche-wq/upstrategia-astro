@@ -1,0 +1,179 @@
+---
+const { currentPath = "/" } = Astro.props;
+
+const isActive = (href: string) =>
+  href === "/" ? currentPath === "/" : currentPath.startsWith(href);
+
+const offersMenu = [
+  { href: "/offres/crm-simple", label: "CRM simple" },
+  { href: "/offres/relances-automatiques", label: "Relances automatiques" },
+  { href: "/offres/base-donnees-propre", label: "Base de données propre" },
+  { href: "/expertises", label: "Approche & expertises" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--border-soft)] bg-white/80 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <!-- LOGO -->
+    <a href="/" class="flex items-center gap-2" aria-label="Accueil UpStrategia">
+      <img src="/images/logo-upstrategia.png" alt="UpStrategia" class="h-15
+       w-auto" />
+    </a>
+
+    <!-- NAV DESKTOP -->
+    <nav class="hidden items-center gap-6 text-sm md:flex" aria-label="Navigation principale">
+      <a
+        href="/"
+        aria-current={isActive("/") ? "page" : undefined}
+        class={`hover:opacity-80 ${isActive("/") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"}`}
+      >
+        Accueil
+      </a>
+
+      <!-- OFFRES (menu) -->
+      <div class="relative">
+        <details class="group">
+          <summary
+            class={`list-none cursor-pointer select-none hover:opacity-80 ${
+              isActive("/offres") || isActive("/expertises")
+                ? "font-semibold text-[var(--text-main)]"
+                : "text-[var(--text-muted)]"
+            }`}
+          >
+            Offres <span class="ml-1 inline-block transition group-open:rotate-180">⌄</span>
+          </summary>
+
+          <div class="absolute left-0 mt-3 w-[320px] rounded-2xl border border-[var(--border-soft)] bg-white p-2 shadow-lg">
+            {offersMenu.map((o) => (
+              <a
+                href={o.href}
+                class={`block rounded-xl px-3 py-2 text-sm hover:bg-black/5 ${
+                  isActive(o.href) ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+                }`}
+              >
+                {o.label}
+              </a>
+            ))}
+          </div>
+        </details>
+      </div>
+
+      <a
+        href="/realisations"
+        aria-current={isActive("/realisations") ? "page" : undefined}
+        class={`hover:opacity-80 ${isActive("/realisations") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"}`}
+      >
+        Réalisations
+      </a>
+
+      <a
+        href="/blog"
+        aria-current={isActive("/blog") ? "page" : undefined}
+        class={`hover:opacity-80 ${isActive("/blog") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"}`}
+      >
+        Blog
+      </a>
+
+      <a
+        href="/a-propos"
+        aria-current={isActive("/a-propos") ? "page" : undefined}
+        class={`hover:opacity-80 ${isActive("/a-propos") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"}`}
+      >
+        À propos
+      </a>
+
+      <a
+        href="/contact"
+        aria-current={isActive("/contact") ? "page" : undefined}
+        class={`hover:opacity-80 ${isActive("/contact") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"}`}
+      >
+        Contact
+      </a>
+    </nav>
+
+    <!-- CTA -->
+    <a
+      href="/contact?from=header&diagnostic=1"
+      class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition"
+    >
+      Faire le point
+    </a>
+  </div>
+
+  <!-- NAV MOBILE -->
+  <nav class="mx-auto max-w-6xl px-4 pb-3 md:hidden" aria-label="Navigation mobile">
+    <div class="flex flex-col gap-2 text-sm">
+      <a
+        href="/"
+        class={`rounded-xl px-2 py-2 hover:bg-black/5 ${
+          isActive("/") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+        }`}
+      >
+        Accueil
+      </a>
+
+      <div class="rounded-xl border border-[var(--border-soft)] bg-white">
+        <details class="group">
+          <summary
+            class={`list-none cursor-pointer px-2 py-2 hover:bg-black/5 ${
+              isActive("/offres") || isActive("/expertises")
+                ? "font-semibold text-[var(--text-main)]"
+                : "text-[var(--text-muted)]"
+            }`}
+          >
+            Offres <span class="float-right transition group-open:rotate-180">⌄</span>
+          </summary>
+
+          <div class="px-2 pb-2">
+            {offersMenu.map((o) => (
+              <a
+                href={o.href}
+                class={`mt-1 block rounded-xl px-2 py-2 hover:bg-black/5 ${
+                  isActive(o.href) ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+                }`}
+              >
+                {o.label}
+              </a>
+            ))}
+          </div>
+        </details>
+      </div>
+
+      <a
+        href="/realisations"
+        class={`rounded-xl px-2 py-2 hover:bg-black/5 ${
+          isActive("/realisations") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+        }`}
+      >
+        Réalisations
+      </a>
+
+      <a
+        href="/blog"
+        class={`rounded-xl px-2 py-2 hover:bg-black/5 ${
+          isActive("/blog") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+        }`}
+      >
+        Blog
+      </a>
+
+      <a
+        href="/a-propos"
+        class={`rounded-xl px-2 py-2 hover:bg-black/5 ${
+          isActive("/a-propos") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+        }`}
+      >
+        À propos
+      </a>
+
+      <a
+        href="/contact"
+        class={`rounded-xl px-2 py-2 hover:bg-black/5 ${
+          isActive("/contact") ? "font-semibold text-[var(--text-main)]" : "text-[var(--text-muted)]"
+        }`}
+      >
+        Contact
+      </a>
+    </div>
+  </nav>
+</header>

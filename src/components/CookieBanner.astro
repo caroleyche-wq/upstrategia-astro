@@ -1,0 +1,74 @@
+<div id="cookie-banner" style="position:fixed; left:0; right:0; bottom:0; z-index:9999; display:none;">
+  <div
+    style="
+      max-width: 1040px;
+      margin: 16px auto;
+      padding: 16px;
+      background: white;
+      border: 1px solid var(--border, rgba(0,0,0,.15));
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    "
+  >
+    <div style="display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+      <p style="margin:0; font-size:14px; color: var(--text, #111); max-width: 720px;">
+        Ce site utilise des cookies à des fins de mesure d’audience et d’amélioration de l’expérience utilisateur.
+        <a href="/politique-confidentialite" style="color: var(--accent, #B87333); text-decoration: underline; margin-left: 4px;">
+          En savoir plus
+        </a>
+      </p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button
+          id="refuse-cookies"
+          type="button"
+          style="
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--border, rgba(0,0,0,.2));
+            background: white;
+            color: var(--text, #111);
+            font-weight: 600;
+            cursor: pointer;
+          "
+        >
+          Refuser
+        </button>
+
+        <button
+          id="accept-cookies"
+          type="button"
+          style="
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,.08);
+            background: var(--accent, #B87333);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+          "
+        >
+          Accepter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById("cookie-banner");
+  const consent = localStorage.getItem("cookie-consent");
+
+  if (!consent && banner) banner.style.display = "block";
+
+  document.getElementById("accept-cookies")?.addEventListener("click", () => {
+    localStorage.setItem("cookie-consent", "accepted");
+    banner?.remove();
+    location.reload();
+  });
+
+  document.getElementById("refuse-cookies")?.addEventListener("click", () => {
+    localStorage.setItem("cookie-consent", "refused");
+    banner?.remove();
+  });
+</script>

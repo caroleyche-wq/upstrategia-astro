@@ -1,0 +1,170 @@
+---
+import "../styles/global.css";
+
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CookieBanner from "../components/CookieBanner.astro";
+import BlogSubscribeFloating from "../components/BlogSubscribeFloating.astro";
+
+const {
+  title = "UpStrategia – CRM simple, relances & base de données (TPE/PME B2B)",
+  description = "UpStrategia : CRM simple, relances propres (sans spam) et base clients/prospects exploitable. Basée à Rennes (Bretagne) – interventions France entière (visio).",
+  canonical, // optionnel : "/offres" ou "https://www.upstrategia.fr/offres"
+  ogImage, // optionnel : "/images/og.png" (sinon fallback)
+  noindex = false, // optionnel : pour des pages à ne pas indexer si besoin
+} = Astro.props;
+
+const SITE = "https://www.upstrategia.fr";
+
+// Normalise : pas de slash final (sauf racine "/")
+function normalizePath(pathname: string) {
+  if (!pathname) return "/";
+  if (pathname === "/") return "/";
+  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+}
+
+// Construit un canonical PROPRE en https + sans query/hash
+function buildCanonicalUrl() {
+  if (canonical) {
+    // Si on reçoit une URL complète
+    if (canonical.startsWith("http://") || canonical.startsWith("https://")) {
+      const u = new URL(canonical);
+      return `${SITE}${normalizePath(u.pathname)}`;
+    }
+    // Si on reçoit un chemin type "/offres"
+    return `${SITE}${normalizePath(canonical)}`;
+  }
+
+  // Par défaut : la page courante
+  return `${SITE}${normalizePath(Astro.url.pathname)}`;
+}
+
+const canonicalUrl = buildCanonicalUrl();
+const currentPath = Astro.url.pathname;
+
+// OG image : fallback sur le logo existant
+const ogImageUrl = ogImage
+  ? (ogImage.startsWith("http") ? ogImage : `${SITE}${ogImage}`)
+  : `${SITE}/images/logo-upstrategia.png`;
+
+// Schéma site-wide (Organization + WebSite)
+const globalSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#organization`,
+      name: "UpStrategia",
+      url: SITE,
+      logo: `${SITE}/images/logo-upstrategia.png`,
+      email: "contact@upstrategia.fr",
+      areaServed: "FR",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Rennes",
+        addressRegion: "Bretagne",
+        addressCountry: "FR",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      url: SITE,
+      name: "UpStrategia",
+      publisher: { "@id": `${SITE}/#organization` },
+      inLanguage: "fr-FR",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE}/recherche?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- OpenGraph -->
+    <meta property="og:site_name" content="UpStrategia" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="UpStrategia – CRM simple, relances & base de données" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Schema.org global -->
+    <script type="application/ld+json" set:html={JSON.stringify(globalSchema)} />
+
+    <!-- GTM : chargé uniquement si consentement OK (ne dépose pas de cookies à lui seul) -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+
+      (function () {
+        try {
+          var consent = localStorage.getItem("cookie-consent");
+          if (consent !== "accepted") return;
+
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != "dataLayer" ? "&l=" + l : "";
+            j.async = true;
+            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, "script", "dataLayer", "GTM-N9H8XCQ3");
+        } catch (e) {
+          // si localStorage indisponible, on ne charge rien
+        }
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-white text-slate-900 antialiased">
+    <Header currentPath={currentPath} />
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <BlogSubscribeFloating />
+
+    <CookieBanner />
+
+    <!-- GTM noscript : injecté uniquement si consentement OK -->
+    <script is:inline>
+      if (localStorage.getItem("cookie-consent") === "accepted") {
+        const ns = document.createElement("noscript");
+        ns.innerHTML =
+          '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9H8XCQ3" height="0" width="0" style="display:none;visibility:hidden"></iframe>';
+        document.body.appendChild(ns);
+      }
+    </script>
+  </body>
+</html>

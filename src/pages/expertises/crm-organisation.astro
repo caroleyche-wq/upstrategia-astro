@@ -1,0 +1,205 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+const problems = [
+  "CRM pas tenu : informations dans la tête, dans des notes ou dans des fichiers",
+  "Pipeline flou : on ne sait pas où en sont les opportunités",
+  "Relances oubliées : pertes sèches",
+  "Outil trop complexe : personne ne l’utilise vraiment",
+];
+
+const whatIDo = [
+  "Définir un pipeline simple (étapes + critères clairs)",
+  "Définir les champs indispensables (pas plus) + règles de saisie",
+  "Mettre en place les relances (rappels, routines, cadence)",
+  "Créer un tableau de bord utile (pilotage, pas décoration)",
+];
+
+const deliverables = [
+  "Structure CRM simplifiée (champs essentiels + règles de saisie)",
+  "Pipeline + critères de passage",
+  "Relances : rappels + routine tenable",
+  "Tableau de bord actionnable",
+];
+
+const faq = [
+  {
+    q: "Je n’ai pas de CRM : est-ce obligatoire ?",
+    a: "Non. On peut partir d’un système simple (tableau, Notion, Airtable), puis évoluer. Le plus important : le suivi et la relance.",
+  },
+  {
+    q: "Quel outil utilisez-vous ?",
+    a: "On choisit l’outil en fonction de votre réalité. L’objectif : que vous l’utilisiez, pas d’avoir le logiciel le plus complet.",
+  },
+  {
+    q: "Est-ce adapté aux petites structures ?",
+    a: "Oui. Une structure simple et tenue est souvent plus efficace qu’un CRM complexe jamais mis à jour.",
+  },
+  {
+    q: "Basée à Rennes : vous intervenez ailleurs ?",
+    a: `Oui. Je suis basée à ${geo.city} (${geo.region}) et j’interviens en visio partout en ${geo.country}.`,
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "CRM & organisation commerciale (pipeline, relances, suivi)",
+  serviceType: "CRM simple et organisation commerciale",
+  provider: { "@type": "Organization", name: "UpStrategia", url: SITE },
+  areaServed: geo.country,
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: `${SITE}/contact?from=expertise-crm&diagnostic=1`,
+    availableLanguage: ["fr"],
+  },
+};
+---
+
+<Layout
+  title={`CRM & organisation commerciale – CRM simple (B2B) – ${geo.city} | UpStrategia`}
+  description={`CRM & organisation commerciale : pipeline simple, relances, routine de suivi et tableau de bord. Pour dirigeants de TPE/PME B2B. Basée à ${geo.city} (${geo.region}).`}
+  canonical="/expertises/crm-organisation"
+>
+  {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+  {serviceJsonLd && <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Expertise</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          CRM & organisation commerciale : un suivi simple, tenu dans le temps
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
+          Le CRM n’est pas un outil “en plus”. C’est ce qui évite de perdre des opportunités par oubli ou désorganisation.
+        </p>
+
+        <p class="mt-3 text-sm text-[var(--text-muted)]">
+          Concrètement : pipeline lisible, relances sécurisées, routine qui tient dans votre quotidien.
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — visio France entière.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-crm&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres/crm-simple"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre CRM simple
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNAUX -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Signaux fréquents</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {problems.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CE QUE JE STRUCTURE -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce que je structure</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Objectif : une organisation simple, stable et utilisée (pas un outil de plus).
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {whatIDo.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Livrables typiques</p>
+        <ul class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+          {deliverables.map((d) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Vous voulez un CRM qui sert vraiment ?</h2>
+        <p class="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          On simplifie, on rend visible, et on met en place une routine de suivi qui tient.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-crm&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres/crm-simple"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre CRM simple
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

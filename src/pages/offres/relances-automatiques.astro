@@ -1,0 +1,393 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+
+const outcomes = [
+  "Ne plus oublier de relancer (rappels simples)",
+  "Relancer sans être agressif (messages courts, timing cohérent)",
+  "Avoir une routine qui tient (pas un système lourd)",
+  "Suivre facilement qui a été relancé et quand",
+];
+
+const forWho = [
+  "Vous relancez quand vous y pensez… donc trop tard",
+  "Vous perdez des opportunités par manque de suivi",
+  "Vous n’aimez pas “harceler”, donc vous relancez peu",
+  "Vous voulez être régulier sans y passer vos journées",
+];
+
+const included = [
+  {
+    title: "Mise au clair de votre process de relance",
+    text: "À qui relancer, quand, avec quel message — adapté à votre activité et vos cycles.",
+  },
+  {
+    title: "Rappels simples (automatiques)",
+    text: "Des rappels pour ne plus oublier : vous gardez le contrôle, ce n’est pas un robot qui spamme.",
+  },
+  {
+    title: "Messages prêts à envoyer",
+    text: "Des modèles courts, propres, et faciles à personnaliser (email / LinkedIn selon vos canaux).",
+  },
+  {
+    title: "Suivi clair (qui a été relancé / quand / prochaine action)",
+    text: "Un suivi lisible : vous savez où vous en êtes, sans tableur compliqué.",
+  },
+  {
+    title: "Mini-formation + doc courte",
+    text: "Vous repartez autonome : routine simple, doc claire, et ajustements si besoin.",
+  },
+];
+
+const steps = [
+  {
+    title: "Point rapide (15 min)",
+    text: "Votre situation, vos cycles, et ce qui bloque aujourd’hui.",
+  },
+  {
+    title: "Construction du système",
+    text: "Rappels + messages + suivi : simple, adapté, documenté.",
+  },
+  {
+    title: "Stabilisation",
+    text: "On ajuste les timings et les messages pour que ça tienne dans le temps.",
+  },
+];
+
+// Cross-sell : les 2 autres solutions
+const otherSolutions = [
+  {
+    title: "CRM simple (suivi commercial clair)",
+    text: "Centraliser vos contacts et avoir un pipeline lisible : savoir qui en est où, et quoi faire ensuite.",
+    href: "/offres/crm-simple",
+    cta: "Découvrir l’offre CRM simple",
+  },
+  {
+    title: "Base de données propre (clients & prospects)",
+    text: "Doublons supprimés, champs utiles, segmentation : une base exploitable pour relancer proprement.",
+    href: "/offres/base-donnees-propre",
+    cta: "Découvrir l’offre Base",
+  },
+];
+
+const faq = [
+  {
+    q: "Relances automatiques = spam ?",
+    a: "Non. Le but n’est pas d’envoyer en masse. On met en place des relances propres : rappels, messages courts, timing cohérent. Vous gardez la main.",
+  },
+  {
+    q: "Vous envoyez les messages à ma place ?",
+    a: "En général non : vous gardez le contrôle. On prépare les messages et la logique, et vous envoyez (ou validez) selon votre fonctionnement.",
+  },
+  {
+    q: "Je n’ai pas de CRM, c’est possible quand même ?",
+    a: "Oui. On peut démarrer simplement (suivi léger), puis évoluer vers un CRM si c’est utile. L’objectif : du concret rapidement.",
+  },
+  {
+    q: "Ça marche avec LinkedIn ?",
+    a: "Oui, si LinkedIn fait partie de vos canaux. On reste sur une approche propre : pas de séquences agressives.",
+  },
+  {
+    q: `Vous travaillez uniquement à ${geo.city} ?`,
+    a: `Je suis basée à ${geo.city} (${geo.region}). J’interviens principalement en visio partout en ${geo.country}, et sur site selon projet.`,
+  },
+  {
+    q: "En combien de temps c’est en place ?",
+    a: "Souvent en quelques jours à quelques semaines selon votre point de départ (base de contacts, volume, canaux). On vise du concret rapidement.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+// BreadcrumbList JSON-LD
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: "/" },
+    { "@type": "ListItem", position: 2, name: "Offres", item: "/offres" },
+    { "@type": "ListItem", position: 3, name: "Relances automatiques", item: "/offres/relances-automatiques" },
+  ],
+};
+---
+
+<Layout
+  title={`Relances automatiques (sans spam) – TPE/PME B2B – ${geo.city} | UpStrategia`}
+  description={`Mise en place de relances automatiques propres (sans spam) : rappels, messages prêts à envoyer, suivi clair. Pour dirigeants de TPE/PME B2B. Basée à ${geo.city} (${geo.region}), visio ${geo.country}.`}
+  canonical="/offres/relances-automatiques"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- BREADCRUMBS (visible) -->
+    <nav class="pt-8" aria-label="Fil d’Ariane">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:underline">Accueil</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li>
+          <a href="/offres" class="hover:underline">Offres</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li class="text-[var(--text-main)] font-medium">Relances automatiques</li>
+      </ol>
+    </nav>
+
+    <!-- HERO -->
+    <section class="py-10 sm:py-14">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">
+          Offre — Relances automatiques • {geo.city} / {geo.region} — visio {geo.country}
+        </p>
+
+        <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Relances automatiques : être régulier sans spammer
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Si vos relances se font “quand vous y pensez”, vous perdez des opportunités.
+          On met en place des <strong>rappels simples</strong>, des <strong>messages courts</strong> et un <strong>suivi clair</strong>
+          pour relancer proprement, sans y passer vos journées.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=relances-automatiques&offer=relances"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min (gratuit)
+          </a>
+          <a
+            href="#contenu"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir ce qui est inclus
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Retour aux offres
+          </a>
+        </div>
+
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {outcomes.map((x) => (
+            <li class="rounded-2xl border border-[var(--border-soft)] bg-white p-4 text-sm text-[var(--text-muted)] shadow-sm">
+              {x}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- POUR QUI -->
+    <section class="py-10 sm:py-12">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Pour qui c’est fait</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si vous cochez 2–3 points, vous pouvez améliorer rapidement vos résultats avec une relance plus régulière.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {forWho.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <p class="text-sm text-[var(--text-muted)]">{x}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CONTENU -->
+    <section id="contenu" class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce qui est inclus</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’objectif : des relances propres, maîtrisées, et une routine qui tient.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {included.map((b) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{b.title}</h3>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{b.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h3 class="text-xl font-semibold text-[var(--brand-blue)]">Ce que vous obtenez à la fin</h3>
+        <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
+          <li>• Des rappels simples pour ne plus oublier</li>
+          <li>• Des messages courts prêts à envoyer</li>
+          <li>• Un suivi clair : relancé / pas relancé / prochaine action</li>
+          <li>• Une routine + une mini-doc</li>
+        </ul>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=relances-automatiques&offer=relances"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+          <a
+            href="#process"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir le déroulé
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Comment ça se passe</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        On va droit au but : une méthode simple, sans complexifier votre quotidien.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {steps.map((s, idx) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-black/5 text-sm font-semibold text-[var(--brand-blue)]">
+                {idx + 1}
+              </span>
+              <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            </div>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{s.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h3 class="text-xl font-semibold text-[var(--brand-blue)]">Ce que je refuse (et ce que je fais à la place)</h3>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          Pas de séquences agressives, pas de spam, pas de “copier-coller” honteux.
+          On fait des relances propres, adaptées à votre business, et faciles à tenir.
+        </p>
+      </div>
+    </section>
+
+    <!-- AUTRES SOLUTIONS (MAILLAGE INTERNE) -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Les 2 autres solutions simples</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si le sujet principal est plutôt la structure du suivi ou la qualité de la base, ces offres sont souvent plus adaptées.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {otherSolutions.map((s) => (
+          <a
+            href={s.href}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{s.text}</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              {s.cta} →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- GEO -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          Relances automatiques à {geo.city} ({geo.region}) — visio {geo.country}
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
+          Basée à {geo.city}, j’accompagne des dirigeants de TPE/PME B2B en Bretagne et partout en France (visio).
+          Possibilité de présentiel à Rennes et alentours selon le projet.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=relances-automatiques&offer=relances"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Prendre contact
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les autres offres
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL (conversion) -->
+<section class="pb-16">
+  <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+    <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">On fait le point ?</h2>
+    <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+      15 minutes : votre situation, vos priorités, et la prochaine étape simple.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a
+        href="/contact?from=relances-automatiques&offer=relances"
+        class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+      >
+        Faire le point en 15 min
+      </a>
+      <a
+        href="mailto:contact@upstrategia.fr?subject=UpStrategia%20-%20Relances%20automatiques"
+        class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+      >
+        Écrire par email
+      </a>
+    </div>
+
+    <p class="mt-4 text-xs text-[var(--text-muted)]">Réponse sous 48h (en général). Pas de spam.</p>
+  </div>
+</section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="mt-10 rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">On fait le point ?</h2>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          15 minutes : votre situation, vos priorités, et la prochaine étape simple.
+        </p>
+        <div class="mt-6">
+          <a
+            href="/contact?from=relances-automatiques&offer=relances"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

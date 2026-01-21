@@ -1,0 +1,224 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+// ✅ Portes d’entrée (alignées avec ta stratégie)
+const entryOffers = [
+  {
+    title: "CRM simple",
+    text: "Un suivi commercial clair (qui en est où, et quoi faire ensuite).",
+    href: "/offres/crm-simple",
+    cta: "Voir l’offre CRM",
+  },
+  {
+    title: "Relances automatiques (propres)",
+    text: "Ne plus oublier de relancer, sans harceler ni spammer.",
+    href: "/offres/relances-automatiques",
+    cta: "Voir l’offre Relances",
+  },
+  {
+    title: "Base de données propre",
+    text: "Contacts exploitables : doublons, champs utiles, segmentation simple.",
+    href: "/offres/base-donnees-propre",
+    cta: "Voir l’offre Base",
+  },
+];
+
+// ✅ Expertises (contenu SEO + preuves, mais “secondaires”)
+const pillars = [
+  {
+    slug: "/expertises/strategie-marketing-b2b",
+    title: "Stratégie marketing B2B",
+    tagline: "Clarifier l’offre, le message et la priorisation.",
+    bullets: ["Positionnement & proposition de valeur", "Offre(s) lisibles et vendables", "Plan d’actions 90 jours"],
+  },
+  {
+    slug: "/expertises/prospection-b2b",
+    title: "Prospection B2B & acquisition",
+    tagline: "Structurer un pipeline fiable, sans s’épuiser.",
+    bullets: ["Routine commerciale et relances", "Scripts & séquences (LinkedIn / email / téléphone)", "Qualification & suivi"],
+  },
+  {
+    slug: "/expertises/crm-organisation",
+    title: "CRM & organisation commerciale",
+    tagline: "Un CRM utile, simple, et tenu dans le temps.",
+    bullets: ["Pipeline clair (étapes + critères)", "Champs essentiels (sans usine à gaz)", "Tableaux de bord actionnables"],
+  },
+  {
+    slug: "/expertises/ia-raisonnee",
+    title: "IA raisonnée & automatisation",
+    tagline: "Automatiser ce qui vaut le coup, avec un cadre.",
+    bullets: ["Cadrage des cas d’usage (ROI)", "Automatisations utiles & documentées", "Bonnes pratiques (ce qu’on fait / évite)"],
+  },
+];
+
+const methodSteps = [
+  { title: "Diagnostic", text: "On identifie où ça bloque vraiment (suivi, relances, base, message)." },
+  { title: "Priorisation", text: "On choisit peu d’actions, mais les bonnes (plan réaliste)." },
+  { title: "Mise en place", text: "On installe les process et outils utiles (sans complexité inutile)." },
+  { title: "Stabilisation", text: "On documente et on ancre une routine tenable (vous restez autonomes)." },
+];
+
+// JSON-LD : liste des expertises
+const listJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: pillars.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: p.title,
+    url: `${SITE}${p.slug}`,
+  })),
+};
+---
+
+<Layout
+  title={`Expertises – CRM, relances, base de données (B2B) – ${geo.city} | UpStrategia`}
+  description={`Les expertises UpStrategia derrière 3 solutions simples : CRM simple, relances propres, base de données exploitable. Stratégie B2B, prospection, CRM, IA raisonnée. Basée à ${geo.city} (${geo.region}).`}
+  canonical="/expertises"
+>
+  {listJsonLd && <script type="application/ld+json" set:html={JSON.stringify(listJsonLd)} />}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Expertises</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Les expertises derrière 3 solutions simples : CRM, relances, base de données
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Cette page existe pour répondre à une question simple : <strong class="text-[var(--text-main)]">“comment vous faites, concrètement ?”</strong>
+          <br />
+          Si vous voulez agir vite : commencez par une des 3 solutions.
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — accompagnement en visio partout en France.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertises&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les offres
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTES D’ENTRÉE -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Commencer par une solution simple</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Ce sont les 3 points qui évitent de perdre des opportunités au quotidien.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
+        {entryOffers.map((o) => (
+          <a
+            href={o.href}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{o.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{o.text}</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              {o.cta} →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- EXPERTISES (SEO) -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Approche & expertises</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si vous voulez comprendre le “comment”, voici les 4 briques que j’utilise selon les cas.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {pillars.map((p) => (
+          <a
+            href={p.slug}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base sm:text-lg font-semibold text-[var(--brand-blue)]">{p.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{p.tagline}</p>
+
+            <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
+              {p.bullets.map((b) => (
+                <li class="flex gap-3">
+                  <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              Découvrir <span aria-hidden="true">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- METHODE -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Méthode (simple, tenable)</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Objectif : <strong class="text-[var(--text-main)]">obtenir des clients sans s’épuiser</strong>.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {methodSteps.map((s, idx) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-black/5 text-sm font-semibold text-[var(--brand-blue)]">
+                {idx + 1}
+              </span>
+              <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            </div>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="pb-16 pt-6">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Vous voulez savoir quoi faire, dans quel ordre ?</h2>
+        <p class="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          15 minutes : votre situation, 2–3 priorités, et la prochaine étape simple.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertises&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les offres
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

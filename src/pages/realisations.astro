@@ -1,0 +1,304 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+/**
+ * ✅ Mini-cas orientés conversion :
+ * - ordre = offres porte d’entrée
+ * - impact = résultat business en 1 phrase
+ * - CTA = pages offres dédiées (maillage fort)
+ */
+const cases = [
+  {
+    title: "CRM simple — suivi commercial lisible",
+    context:
+      "Contacts éparpillés, suivi “dans la tête”, opportunités oubliées : besoin d’un CRM vraiment utilisable au quotidien.",
+    actions: [
+      "Centralisation des contacts + champs utiles",
+      "Pipeline simple (qui en est où, prochaine action)",
+      "Routine de suivi légère (30 min / semaine)",
+    ],
+    outcomes: [
+      "Moins d’opportunités perdues",
+      "Suivi plus régulier sans charge mentale",
+      "Visibilité immédiate sur les priorités",
+    ],
+    impact: "Un dirigeant sait quoi relancer, quand, et pourquoi — sans se demander “où c’était déjà noté”.",
+    tags: ["CRM", "Organisation", "Suivi commercial"],
+    cta: { label: "Découvrir l’offre CRM simple", href: "/offres/crm-simple" },
+  },
+  {
+    title: "Relances automatiques — propres, sans spam",
+    context:
+      "Relances faites trop tard (ou pas du tout) : besoin d’un système qui rappelle et sécurise le suivi, sans harceler.",
+    actions: [
+      "Définition des scénarios de relance (ex : J+3, J+10)",
+      "Messages courts prêts à envoyer (ton humain)",
+      "Suivi clair (relancé / à relancer / réponse)",
+    ],
+    outcomes: [
+      "Plus de régularité sans y penser tous les jours",
+      "Moins d’opportunités qui “tombent dans le trou”",
+      "Une prospection plus stable",
+    ],
+    impact: "Les relances se font à temps — sans y passer tes soirées, et sans messages agressifs.",
+    tags: ["Relances", "Prospection", "Routine"],
+    cta: { label: "Découvrir l’offre Relances", href: "/offres/relances-automatiques" },
+  },
+  {
+    title: "Base de données propre — clients & prospects exploitables",
+    context:
+      "Fichiers anciens, doublons, infos manquantes : impossible d’agir efficacement sans remettre de l’ordre.",
+    actions: [
+      "Nettoyage (doublons, erreurs, formats)",
+      "Structuration (champs utiles, cohérence)",
+      "Segmentation simple (pour agir : relancer, trier, prioriser)",
+    ],
+    outcomes: [
+      "Une base claire pour vos actions commerciales",
+      "Moins de temps perdu à “chercher” l’info",
+      "Des actions plus ciblées",
+    ],
+    impact: "Tu repars avec une base propre, actionnable, et un minimum de règles pour qu’elle reste propre.",
+    tags: ["Base de données", "Qualité", "Organisation"],
+    cta: { label: "Découvrir l’offre Base propre", href: "/offres/base-donnees-propre" },
+  },
+  {
+    title: "IA raisonnée — automatisations utiles (optionnel)",
+    context:
+      "Beaucoup d’outils, beaucoup d’idées : besoin d’un cadre pour automatiser uniquement ce qui rapporte vraiment.",
+    actions: [
+      "Cadrage des cas d’usage + scoring ROI",
+      "Mise en place de 1 à 3 automatisations utiles selon périmètre",
+      "Documentation pour garder la maîtrise",
+    ],
+    outcomes: [
+      "Moins de friction et moins de confusion",
+      "Automatisations réellement utilisées",
+      "Autonomie renforcée (pas de dépendance)",
+    ],
+    impact: "On automatise ce qui fait gagner du temps pour de vrai — pas ce qui “fait joli”.",
+    tags: ["IA raisonnée", "Automatisation", "ROI"],
+    cta: { label: "Découvrir l’approche IA raisonnée", href: "/expertises" },
+  },
+];
+
+const proofPoints = [
+  {
+    title: "Approche orientée action",
+    text: "On clarifie, on priorise, puis on met en place. Pas de stratégie hors-sol.",
+  },
+  {
+    title: "Livrables concrets",
+    text: "Structure CRM, pipeline, relances, base de données — et une routine simple qui tient dans le temps.",
+  },
+  {
+    title: "Expérience B2B",
+    text: "Marketing et développement commercial avec une logique terrain, pas seulement “communication”.",
+  },
+];
+
+// JSON-LD : liste des réalisations (léger, utile)
+const casesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: cases.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.title,
+    url: `${SITE}/realisations`,
+  })),
+};
+---
+
+<Layout
+  title={`Réalisations – UpStrategia | CRM, relances & base de données à ${geo.city}`}
+  description={`Exemples de réalisations UpStrategia : CRM simple, relances propres, base clients/prospects exploitable. Basée à ${geo.city} (${geo.region}), interventions ${geo.country}.`}
+  canonical="/realisations"
+>
+  {casesJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(casesJsonLd)} />
+  )}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Réalisations</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Des exemples concrets (et reproductibles)
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Ici, je ne vends pas des “concepts”. Je montre des cas typiques : remettre de l’ordre dans le suivi,
+          sécuriser les relances, et rendre la base contacts exploitable.
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Note : ces mini-cas sont volontairement synthétiques (et parfois anonymisés) pour rester utiles sans exposer de données sensibles.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=realisations&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les offres
+          </a>
+        </div>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — visio {geo.country}.
+        </p>
+      </div>
+    </section>
+
+    <!-- POINTS DE PREUVE -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce que vous pouvez attendre</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Une approche simple, structurée, qui vise un objectif : sécuriser des opportunités sans s’épuiser.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {proofPoints.map((p) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{p.title}</h3>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- PORTES D’ENTRÉE (maillage + conversion) -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          Les 3 sujets les plus fréquents
+        </h2>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          La plupart du temps, on commence par l’un de ces 3 points.
+        </p>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          {[
+            { title: "CRM simple", text: "Suivi commercial clair, sans outil compliqué.", href: "/offres/crm-simple" },
+            { title: "Relances propres", text: "Ne plus oublier de relancer, sans spam.", href: "/offres/relances-automatiques" },
+            { title: "Base propre", text: "Contacts exploitables (doublons, champs utiles).", href: "/offres/base-donnees-propre" },
+          ].map((x) => (
+            <a
+              href={x.href}
+              class="group rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-6 transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{x.title}</h3>
+              <p class="mt-2 text-sm text-[var(--text-muted)]">{x.text}</p>
+              <div class="mt-4 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+                Découvrir →
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CASES -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Mini-cas</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Contexte → actions → résultats → impact. L’idée : vous aider à vous projeter rapidement.
+      </p>
+
+      <div class="mt-7 grid gap-4 lg:grid-cols-2">
+        {cases.map((c) => (
+          <article class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{c.title}</h3>
+
+            <div class="mt-4">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Contexte</p>
+              <p class="mt-2 text-sm text-[var(--text-muted)]">{c.context}</p>
+            </div>
+
+            <div class="mt-4">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Actions</p>
+              <ul class="mt-2 space-y-2 text-sm text-[var(--text-muted)]">
+                {c.actions.map((x) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-4">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Résultats</p>
+              <ul class="mt-2 space-y-2 text-sm text-[var(--text-muted)]">
+                {c.outcomes.map((x) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-4 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-4">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Impact</p>
+              <p class="mt-2 text-sm text-[var(--text-muted)]">{c.impact}</p>
+            </div>
+
+            <div class="mt-5 flex flex-wrap gap-2">
+              {c.tags.map((t) => (
+                <span class="rounded-full bg-black/5 px-3 py-1 text-xs text-[var(--text-muted)]">{t}</span>
+              ))}
+            </div>
+
+            <a
+              href={c.cta.href}
+              aria-label={`${c.cta.label} – ${c.title}`}
+              class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-[var(--brand-copper)] px-4 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+            >
+              {c.cta.label}
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="pb-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          Vous voulez voir ce qui serait le plus utile dans votre cas ?
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
+          On fait le point en 15 minutes. Vous repartez avec 2–3 priorités concrètes et une recommandation claire.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=realisations&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les offres
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

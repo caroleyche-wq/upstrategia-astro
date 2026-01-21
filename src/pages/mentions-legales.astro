@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Mentions légales – UpStrategia";
+const description =
+  "Mentions légales du site UpStrategia, consultante marketing B2B, CRM simple, relances et structuration commerciale.";
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical="/mentions-legales"
+  noindex
+>
+  <main class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <section class="prose prose-slate max-w-none">
+      <h1>Mentions légales</h1>
+
+      <h2>Éditeur du site</h2>
+<p>
+  <strong>UpStrategia</strong><br />
+  Carole Yché<br />
+  Entreprise individuelle – Micro-entrepreneure<br />
+  France
+</p>
+
+      <p>
+        Email : <a href="mailto:contact@upstrategia.fr">contact@upstrategia.fr</a><br />
+        Site web : https://www.upstrategia.fr
+      </p>
+
+      <h2>Responsable de la publication</h2>
+      <p>
+        Carole Yché
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>
+        Le site est hébergé par :<br />
+        <strong>Vercel Inc.</strong><br />
+        340 S Lemon Ave #4133<br />
+        Walnut, CA 91789 – États-Unis<br />
+        https://vercel.com
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L’ensemble du contenu présent sur ce site (textes, structure, éléments graphiques)
+        est la propriété exclusive de UpStrategia, sauf mention contraire.
+      </p>
+      <p>
+        Toute reproduction, représentation ou diffusion, totale ou partielle,
+        sans autorisation préalable écrite est interdite.
+      </p>
+
+      <h2>Responsabilité</h2>
+      <p>
+        Les informations fournies sur ce site le sont à titre informatif.
+        UpStrategia s’efforce de fournir des informations à jour et exactes,
+        mais ne saurait être tenue responsable d’erreurs ou d’omissions.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Pour toute question concernant le site ou son contenu, vous pouvez écrire à :
+        <a href="mailto:contact@upstrategia.fr">contact@upstrategia.fr</a>
+      </p>
+    </section>
+  </main>
+</Layout>

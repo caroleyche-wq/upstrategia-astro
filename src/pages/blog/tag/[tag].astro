@@ -1,0 +1,130 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+export const prerender = true;
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+
+/* ======================================================
+   STATIC PATHS — génération des pages /blog/tag/*
+   slugify est DEDANS => pas de problème de scope
+   ====================================================== */
+export async function getStaticPaths() {
+  const slugify = (s: string) =>
+    s
+      .toString()
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+  const posts = await getCollection("blog", ({ data }) => data.draft !== true);
+
+  const tags = new Set<string>();
+  for (const post of posts) {
+    for (const tag of post.data.tags ?? []) {
+      const slug = slugify(tag);
+      if (slug) tags.add(slug);
+    }
+  }
+
+  return Array.from(tags).map((tag) => ({ params: { tag } }));
+}
+
+/* ======================================================
+   DONNÉES DE LA PAGE
+   ====================================================== */
+const slugify = (s: string) =>
+  s
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const { tag } = Astro.params; // slug propre (string)
+
+const allPosts = await getCollection("blog", ({ data }) => data.draft !== true);
+
+const posts = allPosts
+  .filter((p) => (p.data.tags ?? []).some((t) => slugify(t) === tag))
+  .sort(
+    (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
+      b.data.date.getTime() - a.data.date.getTime()
+  );
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" });
+
+const canonical = `/blog/tag/${encodeURIComponent(tag ?? "")}`;
+---
+
+<Layout
+  title={`Blog – ${String(tag).replace(/-/g, " ")} | UpStrategia`}
+  description={`Articles filtrés par thème : ${String(tag).replace(/-/g, " ")}. CRM simple, relances propres, base de données exploitable (TPE/PME B2B).`}
+  canonical={canonical}
+>
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+    <!-- HERO -->
+    <section class="py-10 sm:py-14">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">
+          Blog — TPE/PME B2B • {geo.city}
+        </p>
+
+        <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Thème : {String(tag).replace(/-/g, " ")}
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Articles filtrés par thème.
+        </p>
+      </div>
+    </section>
+
+    <!-- LISTE ARTICLES -->
+    <section class="pb-16">
+      {posts.length === 0 ? (
+        <p class="text-sm text-[var(--text-muted)]">Aucun article pour ce thème.</p>
+      ) : (
+        <div class="grid gap-4 md:grid-cols-2">
+          {posts.map((post) => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <p class="text-xs text-[var(--text-muted)]">
+                {formatDate(post.data.date)}
+                {post.data.category ? ` • ${post.data.category}` : ""}
+              </p>
+
+              <h3 class="mt-2 text-lg font-semibold text-[var(--brand-blue)] group-hover:underline">
+                {post.data.title}
+              </h3>
+
+              <p class="mt-2 text-sm text-[var(--text-muted)]">{post.data.description}</p>
+
+              <div class="mt-4 text-sm font-medium text-[var(--brand-copper)]">
+                Lire l’article →
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <div class="pb-16">
+      <a href="/blog" class="text-sm font-medium text-[var(--brand-copper)] hover:underline">
+        ← Retour au blog
+      </a>
+    </div>
+
+  </main>
+</Layout>

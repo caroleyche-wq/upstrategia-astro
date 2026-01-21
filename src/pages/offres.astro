@@ -1,0 +1,316 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+
+// Offres prioritaires = porte d’entrée
+const primaryOffers = [
+  {
+    title: "CRM simple pour TPE / PME B2B",
+    subtitle: "Un suivi commercial clair, sans outil compliqué",
+    what: [
+      "Centralisation des contacts",
+      "Pipeline lisible (qui en est où)",
+      "Prochaines actions visibles",
+    ],
+    forWho: "Dirigeants de TPE/PME qui veulent arrêter de perdre des opportunités",
+    result: "Un suivi commercial simple et maîtrisé",
+    href: "/offres/crm-simple",
+    cta: "Découvrir l’offre CRM simple",
+    contactHref: "/contact?from=offres&offer=crm",
+  },
+  {
+    title: "Relances automatiques (propres, sans spam)",
+    subtitle: "Ne plus oublier de relancer, sans harceler",
+    what: [
+      "Rappels simples",
+      "Messages courts prêts à envoyer",
+      "Suivi clair (relancé / pas relancé)",
+    ],
+    forWho: "Dirigeants qui relancent trop tard (ou pas du tout)",
+    result: "Plus de régularité, sans y penser tous les jours",
+    href: "/offres/relances-automatiques",
+    cta: "Découvrir l’offre Relances",
+    contactHref: "/contact?from=offres&offer=relances",
+  },
+  {
+    title: "Base de données propre (clients & prospects)",
+    subtitle: "Rendre enfin vos contacts exploitables",
+    what: ["Suppression des doublons", "Champs utiles et cohérents", "Segmentation simple"],
+    forWho: "Entreprises avec des fichiers éparpillés ou vieillissants",
+    result: "Une base claire pour vos actions commerciales",
+    href: "/offres/base-donnees-propre",
+    cta: "Découvrir l’offre Base propre",
+    contactHref: "/contact?from=offres&offer=base",
+  },
+];
+
+// Aide au choix (UX + conversion)
+const situations = [
+  {
+    title: "Je perds des opportunités (suivi flou)",
+    text: "Contacts dispersés, pipeline pas clair, on ne sait pas qui relancer.",
+    href: "/offres/crm-simple",
+    cta: "Aller vers CRM simple",
+  },
+  {
+    title: "Je relance trop tard (ou pas du tout)",
+    text: "Vous avez des opportunités, mais la régularité n’est pas là.",
+    href: "/offres/relances-automatiques",
+    cta: "Aller vers Relances",
+  },
+  {
+    title: "Ma base est inutilisable",
+    text: "Doublons, champs vides, infos incohérentes : impossible d’agir proprement.",
+    href: "/offres/base-donnees-propre",
+    cta: "Aller vers Base propre",
+  },
+];
+
+// “Et ensuite” : rassurant, mais secondaire
+const secondaryOffers = [
+  {
+    title: "Audit marketing & prospection",
+    text: "Quand vous avez besoin de prendre du recul et de prioriser avant d’aller plus loin.",
+  },
+  {
+    title: "Structuration de la prospection",
+    text: "Une fois les bases posées, pour gagner en régularité et en efficacité.",
+  },
+  {
+    title: "Automatisation & IA raisonnée",
+    text: "Seulement si cela apporte un gain réel, mesurable et maîtrisé.",
+  },
+];
+
+// FAQ (SEO + réduction de friction)
+const faq = [
+  {
+    q: "Je ne sais pas par où commencer.",
+    a: "On commence par 15 minutes : on clarifie votre situation et la prochaine étape simple (CRM / relances / base).",
+  },
+  {
+    q: "Je suis sur Excel : c’est grave ?",
+    a: "Non. C’est courant. L’important est d’avoir une base propre et un suivi simple. On peut démarrer léger, puis évoluer.",
+  },
+  {
+    q: "Relances automatiques = spam ?",
+    a: "Non. Ici c’est “propre” : rappels, messages courts, timing cohérent. Le but est d’être régulier, pas agressif.",
+  },
+  {
+    q: `Vous travaillez uniquement à ${geo.city} ?`,
+    a: `Je suis basée à ${geo.city} (${geo.region}). J’interviens principalement en visio partout en France, et sur site selon projet.`,
+  },
+];
+
+const SITE = "https://www.upstrategia.fr";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE}/` },
+    { "@type": "ListItem", position: 2, name: "Offres", item: `${SITE}/offres` },
+  ],
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+---
+
+<Layout
+  title={`Offres – CRM simple, relances & base clients – ${geo.city} | UpStrategia`}
+  description={`CRM simple, relances automatiques sans spam et base clients/prospects propre. Pour dirigeants de TPE/PME B2B. Basée à ${geo.city}, visio ${geo.country}.`}
+  canonical="/offres"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- BREADCRUMBS -->
+    <nav class="pt-8" aria-label="Fil d’Ariane">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:underline">Accueil</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li class="text-[var(--text-main)] font-medium">Offres</li>
+      </ol>
+    </nav>
+
+    <!-- HERO -->
+    <section class="py-10 sm:py-14">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">
+          Offres — TPE/PME B2B • {geo.city} / {geo.region} — visio {geo.country}
+        </p>
+
+        <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Des solutions simples pour ne plus perdre d’opportunités
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Trois “briques” essentielles : <strong>CRM simple</strong>, <strong>relances propres</strong>, <strong>base de données exploitable</strong>.
+          Sans outil compliqué ni jargon.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=offres&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+          <a
+            href="#solutions"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les 3 solutions
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-[var(--text-muted)]">
+          Objectif : clarifier et mettre en place un système qui tient dans votre quotidien.
+        </p>
+      </div>
+    </section>
+
+    <!-- CHOIX RAPIDE (UX) -->
+    <section class="py-10 sm:py-12">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Choisir la bonne porte d’entrée</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        En 10 secondes, choisissez votre situation : je vous dirige vers l’offre la plus adaptée.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
+        {situations.map((s) => (
+          <a
+            href={s.href}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{s.text}</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              {s.cta} →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- SOLUTIONS (HUB SEO + conversion) -->
+    <section id="solutions" class="py-10 sm:py-12">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Les 3 solutions simples</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’essentiel pour structurer le suivi commercial, sans usine à gaz.
+      </p>
+
+      <div class="mt-8 space-y-6">
+        {primaryOffers.map((o) => (
+          <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 shadow-sm">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div class="max-w-3xl">
+                <h3 class="text-xl font-semibold text-[var(--brand-blue)]">{o.title}</h3>
+                <p class="mt-2 text-sm text-[var(--text-muted)]">{o.subtitle}</p>
+
+                <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
+                  {o.what.map((w) => (
+                    <li>• {w}</li>
+                  ))}
+                </ul>
+
+                <p class="mt-4 text-sm"><strong>Pour qui :</strong> {o.forWho}</p>
+                <p class="mt-1 text-sm"><strong>Résultat :</strong> {o.result}</p>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <a
+                  href={o.href}
+                  class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+                >
+                  {o.cta}
+                </a>
+                <a
+                  href={o.contactHref}
+                  class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+                >
+                  Faire le point (15 min)
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ET ENSUITE (SECONDARY) -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-xl font-semibold text-[var(--brand-blue)]">Et ensuite, si besoin</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Une fois les bases posées, je peux aussi intervenir sur ces sujets (au bon moment) :
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {secondaryOffers.map((s) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-6">
+            <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="pb-16 pt-6">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          Vous ne savez pas par où commencer ?
+        </h2>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          On fait le point en 15 minutes : votre situation, vos priorités, et la prochaine étape simple.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=offres&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+          <a
+            href="mailto:contact@upstrategia.fr?subject=UpStrategia%20-%20Demande%20d%27aide"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Écrire par email
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-[var(--text-muted)]">Réponse sous 48h (en général). Pas de spam.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </main>
+</Layout>

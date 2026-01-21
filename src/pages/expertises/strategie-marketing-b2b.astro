@@ -1,0 +1,238 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+const problems = [
+  "Offre difficile à expliquer (trop large ou trop technique)",
+  "Message trop générique : on ne retient pas la différence",
+  "Des actions marketing partout, mais peu de demandes qualifiées",
+  "Priorités floues : on change de sujet toutes les semaines",
+];
+
+const whatIDo = [
+  "Clarifier la proposition de valeur et le positionnement (simple, mémorisable)",
+  "Structurer l’offre : packages, périmètres, preuves (et tarifs si utile)",
+  "Identifier le parcours client : où ça décroche, où ça convainc",
+  "Construire un plan d’actions 90 jours : peu d’actions, mais les bonnes",
+];
+
+const deliverables = [
+  "Synthèse positionnement + message",
+  "Offre structurée (périmètre, promesse, preuves, options)",
+  "Plan d’actions 90 jours (priorisé)",
+  "Recommandations pages / contenus / séquences (selon contexte)",
+];
+
+const faq = [
+  {
+    q: "Est-ce que vous faites aussi l’exécution (site, contenus, etc.) ?",
+    a: "Oui, selon le besoin. On peut rester sur la stratégie + priorisation, ou aller jusqu’à la mise en place (pages clés, trames, séquences).",
+  },
+  {
+    q: "Je suis une TPE : est-ce que ça vaut le coup ?",
+    a: "Oui, justement. Quand on est petit, la clarté et la priorité font gagner un temps énorme. L’objectif : une stratégie réaliste et actionnable.",
+  },
+  {
+    q: "Vous êtes basée à Rennes : vous travaillez uniquement en local ?",
+    a: `Je suis basée à ${geo.city} (${geo.region}). J’interviens surtout en visio partout en ${geo.country}, et sur site selon projet.`,
+  },
+  {
+    q: "Combien de temps pour voir un effet ?",
+    a: "Dès qu’on clarifie le message et le parcours, on voit souvent un effet rapide sur la conversion (meilleures demandes). La montée en volume dépend du canal.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Stratégie marketing B2B & structuration de l’offre",
+  serviceType: "Conseil en stratégie marketing B2B",
+  provider: {
+    "@type": "Organization",
+    name: "UpStrategia",
+    url: SITE,
+  },
+  areaServed: geo.country,
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: `${SITE}/contact?from=expertise-strategie-marketing-b2b&diagnostic=1`,
+    availableLanguage: ["fr"],
+  },
+};
+---
+
+<Layout
+  title={`Stratégie marketing B2B & positionnement – ${geo.city} | UpStrategia`}
+  description={`Stratégie marketing B2B : positionnement, message, structuration d’offre, priorisation 90 jours. Basée à ${geo.city} (${geo.region}), accompagnement en visio partout en ${geo.country}.`}
+  canonical="/expertises/strategie-marketing-b2b"
+>
+  {faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
+  {serviceJsonLd && <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Expertise</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Stratégie marketing B2B : clarifier l’offre, le message et les priorités
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
+          Quand le marketing est flou, tout coûte plus cher : acquisition, temps, énergie.
+          Ici, on remet de l’ordre — pour obtenir un message clair et une feuille de route réaliste.
+        </p>
+
+        <p class="mt-3 text-sm text-[var(--text-muted)]">
+          Concrètement : on clarifie votre positionnement et votre offre pour améliorer la conversion
+          et rendre vos actions marketing plus efficaces.
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — visio {geo.country}.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-strategie&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <!-- ✅ Portes d’entrée (cohérence stratégie) -->
+          <a
+            href="/offres/crm-simple"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            CRM simple
+          </a>
+
+          <a
+            href="/offres/relances-automatiques"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Relances automatiques
+          </a>
+
+          <!-- Optionnel : si tu gardes une ancre audit sur /offres -->
+          <a
+            href="/offres#audit"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Audit marketing
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLÈMES -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Signaux fréquents</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si vous vous reconnaissez, c’est souvent un sujet de positionnement, de message ou de priorisation.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {problems.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CE QUE JE FAIS -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce que je fais concrètement</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’objectif n’est pas de produire un document théorique, mais une base utilisable pour agir.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {whatIDo.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Livrables typiques</p>
+        <ul class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+          {deliverables.map((d) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Vous voulez une stratégie claire et tenable ?</h2>
+        <p class="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          On fait un point rapide sur votre contexte et je vous propose une prochaine étape simple.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-strategie&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <a
+            href="/expertises"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Retour aux expertises
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-[var(--text-muted)]">
+          Basée à Rennes (Bretagne) — visio France entière. Réponse sous 48h (en général).
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,239 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+const problems = [
+  "Trop d’outils : on teste, on abandonne, on recommence",
+  "Automatisations inutiles : beaucoup d’efforts pour peu de ROI",
+  "Dépendance à des outils incompris : personne ne sait maintenir",
+  "Confusion entre “IA” et stratégie : on automatise le flou",
+];
+
+const whatIDo = [
+  "Cadrer les cas d’usage (objectif, risques, ROI) : on choisit peu, mais utiles",
+  "Concevoir 1 à 3 automatisations utiles, maintenables et documentées",
+  "Définir des règles de qualité (données, validation, sécurité, limites)",
+  "Documenter et former : vous restez autonomes",
+];
+
+const deliverables = [
+  "Roadmap IA (cas d’usage + priorisation)",
+  "Automatisations (selon périmètre)",
+  "Documentation simple (maintenance, limites)",
+  "Guide de bonnes pratiques",
+];
+
+const faq = [
+  {
+    q: "Vous faites de l’IA générative partout ?",
+    a: "Non. L’IA est un moyen. On choisit des cas d’usage utiles et mesurables. Si ce n’est pas rentable ou maintenable, on ne le fait pas.",
+  },
+  {
+    q: "Vous travaillez avec n8n / Zapier / Make ?",
+    a: "Oui, selon le besoin. L’important est la simplicité, la fiabilité et la documentation.",
+  },
+  {
+    q: "Est-ce que c’est risqué (données, erreurs) ?",
+    a: "Ça peut l’être si c’est mal cadré. C’est justement l’objet de l’IA raisonnée : limites, validation et bonnes pratiques.",
+  },
+  {
+    q: "Basée à Rennes, vous intervenez partout ?",
+    a: `Oui. Je suis basée à ${geo.city} (${geo.region}) et j’interviens en visio partout en ${geo.country}.`,
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+// JSON-LD service
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "IA raisonnée & automatisation (ROI, fiabilité, documentation)",
+  serviceType: "Cadrage IA et automatisation des process",
+  provider: {
+    "@type": "Organization",
+    name: "UpStrategia",
+    url: SITE,
+  },
+  areaServed: geo.country,
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: `${SITE}/contact?from=expertise-ia&diagnostic=1`,
+    availableLanguage: ["fr"],
+  },
+};
+---
+
+<Layout
+  title={`IA raisonnée & automatisation – ROI, fiabilité, documentation – ${geo.city} | UpStrategia`}
+  description={`IA raisonnée : cadrage ROI, 1 à 3 automatisations utiles, documentation et bonnes pratiques. Basée à ${geo.city} (${geo.region}), accompagnement en visio partout en ${geo.country}.`}
+  canonical="/expertises/ia-raisonnee"
+>
+  {faqJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  )}
+
+  {serviceJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  )}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Expertise</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          IA raisonnée & automatisation : utile, maîtrisée, documentée
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
+          Peu d’outils, peu de cas d’usage — mais ceux qui comptent.
+          L’objectif : gagner du temps, fiabiliser, et rester autonome.
+        </p>
+
+        <p class="mt-3 text-sm text-[var(--text-muted)]">
+          Concrètement : on automatise des tâches répétitives ou à forte friction (suivi, relances, reporting, tri),
+          avec un cadre clair (ROI, risques, maintenance).
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — visio {geo.country}.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-ia&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <!-- ✅ Portes d’entrée (prioritaires) -->
+          <a
+            href="/offres/relances-automatiques"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre Relances
+          </a>
+
+          <a
+            href="/offres/base-donnees-propre"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre Base propre
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNAUX -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Signaux fréquents</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {problems.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CE QUE JE METS EN PLACE -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce que je mets en place</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’objectif : des automatisations utiles, maintenables, et compréhensibles.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {whatIDo.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Livrables typiques</p>
+        <ul class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+          {deliverables.map((d) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Vous voulez automatiser sans usine à gaz ?</h2>
+        <p class="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          On cadre, on construit peu, on documente, et vous restez aux commandes.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-ia&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <a
+            href="/offres/relances-automatiques"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Relances automatiques (propres)
+          </a>
+
+          <a
+            href="/expertises"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Retour aux expertises
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-[var(--text-muted)]">
+          Basée à Rennes (Bretagne) — visio France entière. Réponse sous 48h (en général).
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

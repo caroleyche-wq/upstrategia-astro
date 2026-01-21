@@ -1,0 +1,387 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+
+const outcomes = [
+  "Une base claire et exploitable (fin du fichier “bazar”)",
+  "Moins de doublons, moins d’erreurs, moins de contacts inutilisables",
+  "Des champs utiles (pas 40 colonnes incompréhensibles)",
+  "Une segmentation simple pour relancer correctement",
+];
+
+const forWho = [
+  "Vous avez un ou plusieurs fichiers Excel / Google Sheets, pas à jour",
+  "Vous avez des doublons, des champs vides, des infos incohérentes",
+  "Vous avez des contacts dans plusieurs endroits (mails, téléphone, LinkedIn…)",
+  "Vous voulez relancer, mais votre base ne permet pas de le faire proprement",
+];
+
+const included = [
+  {
+    title: "Diagnostic de la base (rapide et concret)",
+    text: "On identifie ce qui bloque : doublons, champs inutiles, incohérences, manque d’infos clés.",
+  },
+  {
+    title: "Nettoyage (doublons, format, cohérence)",
+    text: "On supprime/merge les doublons, on harmonise les formats, on met la base au propre.",
+  },
+  {
+    title: "Structure simple (champs utiles + règles claires)",
+    text: "On définit une structure minimum utile : ce qu’il faut remplir, comment, et pourquoi.",
+  },
+  {
+    title: "Segmentation (simple) pour vos actions",
+    text: "On ajoute 2–3 segments utiles (ex : type de client, statut, priorité relance) pour agir facilement.",
+  },
+  {
+    title: "Préparation à l’exploitation (CRM / relances)",
+    text: "Selon votre besoin : import dans un CRM, ou base prête à servir pour relancer proprement.",
+  },
+  {
+    title: "Doc courte + routine",
+    text: "Vous repartez avec une mini-doc : comment maintenir la base propre sans y passer du temps.",
+  },
+];
+
+const steps = [
+  { title: "Point rapide (15 min)", text: "On comprend votre base actuelle, vos objectifs, et ce qui vous manque pour agir." },
+  { title: "Nettoyage & structuration", text: "On rend la base propre, cohérente, et utilisable (sans usine à gaz)." },
+  { title: "Exploitation", text: "On prépare l’usage : segmentation + relances + (si besoin) import dans un CRM." },
+];
+
+// Cross-sell : les 2 autres solutions
+const otherSolutions = [
+  {
+    title: "CRM simple (suivi commercial clair)",
+    text: "Centraliser vos contacts, avoir un pipeline lisible et savoir exactement qui relancer.",
+    href: "/offres/crm-simple",
+    cta: "Découvrir l’offre CRM simple",
+  },
+  {
+    title: "Relances automatiques (propres, sans spam)",
+    text: "Des rappels simples + des messages courts prêts à envoyer, pour relancer régulièrement.",
+    href: "/offres/relances-automatiques",
+    cta: "Découvrir l’offre Relances",
+  },
+];
+
+const faq = [
+  {
+    q: "Vous pouvez reprendre plusieurs fichiers (Excel, mails, etc.) ?",
+    a: "Oui. On centralise, on nettoie, et on garde une base unique. L’objectif : arrêter de perdre du temps entre plusieurs sources.",
+  },
+  {
+    q: "Je n’ai pas toutes les infos sur mes contacts. Ça bloque ?",
+    a: "Non. On se concentre sur les champs utiles. On peut ensuite enrichir progressivement, mais on ne vous bloque pas pour “perfection”.",
+  },
+  {
+    q: "Ça sert à quoi si je n’ai pas de CRM ?",
+    a: "Même sans CRM, une base propre permet déjà de relancer mieux et de savoir qui contacter. Et si besoin, on pourra migrer vers un CRM simple ensuite.",
+  },
+  {
+    q: "Est-ce que vous faites aussi l’import dans un CRM ?",
+    a: "Oui, si c’est pertinent. L’idée : une base exploitable + un usage simple derrière (sinon, ça redevient vite le bazar).",
+  },
+  {
+    q: `Vous travaillez uniquement à ${geo.city} ?`,
+    a: `Je suis basée à ${geo.city} (${geo.region}). J’interviens principalement en visio partout en ${geo.country}, et sur site selon projet.`,
+  },
+  {
+    q: "En combien de temps c’est fait ?",
+    a: "Ça dépend du volume et de l’état de la base. Souvent quelques jours à quelques semaines. On vise du concret rapidement.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+// BreadcrumbList JSON-LD
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: "/" },
+    { "@type": "ListItem", position: 2, name: "Offres", item: "/offres" },
+    { "@type": "ListItem", position: 3, name: "Base de données propre", item: "/offres/base-donnees-propre" },
+  ],
+};
+---
+
+<Layout
+  title={`Base de données propre (clients & prospects) – ${geo.city} | UpStrategia`}
+  description={`Nettoyage, structuration et exploitation de base clients/prospects : suppression des doublons, champs utiles, segmentation simple, préparation CRM/relances. Pour dirigeants de TPE/PME B2B. Basée à ${geo.city} (${geo.region}), visio ${geo.country}.`}
+  canonical="/offres/base-donnees-propre"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- BREADCRUMBS (visible) -->
+    <nav class="pt-8" aria-label="Fil d’Ariane">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+        <li>
+          <a href="/" class="hover:underline">Accueil</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li>
+          <a href="/offres" class="hover:underline">Offres</a>
+          <span class="mx-2">/</span>
+        </li>
+        <li class="text-[var(--text-main)] font-medium">Base de données propre</li>
+      </ol>
+    </nav>
+
+    <!-- HERO -->
+    <section class="py-10 sm:py-14">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">
+          Offre — Base de données propre • {geo.city} / {geo.region} — visio {geo.country}
+        </p>
+
+        <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Base de données propre : des contacts exploitables, enfin
+        </h1>
+
+        <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+          Si vos contacts sont dispersés (Excel, mails, notes…) et que vous perdez du temps à “retrouver les infos”,
+          on remet la base au propre : <strong>doublons supprimés</strong>, <strong>structure simple</strong>, <strong>segmentation utile</strong>.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=base-donnees-propre&offer=base"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min (gratuit)
+          </a>
+          <a
+            href="#contenu"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir ce qui est inclus
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Retour aux offres
+          </a>
+        </div>
+
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {outcomes.map((x) => (
+            <li class="rounded-2xl border border-[var(--border-soft)] bg-white p-4 text-sm text-[var(--text-muted)] shadow-sm">
+              {x}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- POUR QUI -->
+    <section class="py-10 sm:py-12">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Pour qui c’est fait</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si vous cochez 2–3 points, une base propre vous fera gagner du temps (et des opportunités) rapidement.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {forWho.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <p class="text-sm text-[var(--text-muted)]">{x}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CONTENU -->
+    <section id="contenu" class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce qui est inclus</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’objectif : une base simple, exploitable, et qui reste propre dans le temps.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {included.map((b) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{b.title}</h3>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{b.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h3 class="text-xl font-semibold text-[var(--brand-blue)]">Ce que vous obtenez à la fin</h3>
+        <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
+          <li>• Une base clients/prospects unique, claire, sans doublons</li>
+          <li>• Une structure simple (champs utiles + règles)</li>
+          <li>• Une segmentation minimale pour agir</li>
+          <li>• Une mini-doc + une routine de maintien</li>
+        </ul>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=base-donnees-propre&offer=base"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+          <a
+            href="#process"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir le déroulé
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process" class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Comment ça se passe</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        On va droit au but : rendre la base exploitable, puis la maintenir propre facilement.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {steps.map((s, idx) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-black/5 text-sm font-semibold text-[var(--brand-blue)]">
+                {idx + 1}
+              </span>
+              <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            </div>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{s.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h3 class="text-xl font-semibold text-[var(--brand-blue)]">Ce que je refuse (et ce que je fais à la place)</h3>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          Pas de fichier “parfait” impossible à maintenir, pas de champs inutiles, pas de complexité.
+          On fait une base simple, utile, et maintenable.
+        </p>
+      </div>
+    </section>
+
+    <!-- AUTRES SOLUTIONS (MAILLAGE INTERNE) -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Les 2 autres solutions simples</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        Si le sujet principal est plutôt la structure du suivi ou la régularité des relances, ces offres sont souvent plus adaptées.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {otherSolutions.map((s) => (
+          <a
+            href={s.href}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{s.title}</h3>
+            <p class="mt-2 text-sm text-[var(--text-muted)]">{s.text}</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              {s.cta} →
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- GEO -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          Base clients/prospects — {geo.city} ({geo.region}) — visio {geo.country}
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
+          Basée à {geo.city}, j’accompagne des dirigeants de TPE/PME B2B en Bretagne et partout en France (visio).
+          Possibilité de présentiel à Rennes et alentours selon le projet.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=base-donnees-propre&offer=base"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Prendre contact
+          </a>
+          <a
+            href="/offres"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir les autres offres
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL (conversion) -->
+<section class="pb-16">
+  <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+    <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">On fait le point ?</h2>
+    <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+      15 minutes : votre situation, vos priorités, et la prochaine étape simple.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a
+        href="/contact?from=base-donnees-propre&offer=base"
+        class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+      >
+        Faire le point en 15 min
+      </a>
+      <a
+        href="mailto:contact@upstrategia.fr?subject=UpStrategia%20-%20Base%20de%20donnees%20propre"
+        class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+      >
+        Écrire par email
+      </a>
+    </div>
+
+    <p class="mt-4 text-xs text-[var(--text-muted)]">Réponse sous 48h (en général). Pas de spam.</p>
+  </div>
+</section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="mt-10 rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">On fait le point ?</h2>
+        <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+          15 minutes : votre situation, vos priorités, et la prochaine étape simple.
+        </p>
+        <div class="mt-6">
+          <a
+            href="/contact?from=base-donnees-propre&offer=base"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point en 15 min
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

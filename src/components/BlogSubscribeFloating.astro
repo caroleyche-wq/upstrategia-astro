@@ -1,0 +1,62 @@
+---
+const brevoUrl =
+  "https://9fb02c04.sibforms.com/serve/MUIFACEpYUIw5adKCQyTLwmN2Bw2oXgg1Vp2O_lUhtBrQmB7beMecL_4arPWHYtVwJDWncHg8RaiV3zl3giXahjdE0Adj7GU4Q6G4_BIuHBIWXxZCGeJcokjKAHh-s5FkgaWY7Rku_tGcYDU5ExLc1Xo3bvIn6Etc1M8yzcNCO__cHxH-Sz2U-qMSZHSaa7W9eAopmmLLp8LTddRrg=="; // ex: https://xxxxxx.sibforms.com/serve/...
+---
+
+<a
+  href={brevoUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="blog-subscribe-floating"
+  aria-label="Je m’abonne au blog (ouvre Brevo dans un nouvel onglet)"
+>
+  <span class="icon" aria-hidden="true">🔔</span>
+  <span class="label">Je m’abonne au blog</span>
+</a>
+
+<style>
+  .blog-subscribe-floating{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 18px;
+    border-radius: 999px;
+
+    background: var(--accent); /* cuivre */
+    color: #fff;               /* texte blanc => lisible */
+    text-decoration: none;
+
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+    border: 1px solid rgba(0,0,0,.06);
+
+    z-index: 9999; /* au-dessus de tout */
+    transform: translateZ(0); /* évite certains bugs de stacking */
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .blog-subscribe-floating:hover{
+    opacity: .92;
+  }
+
+  .blog-subscribe-floating:focus-visible{
+    outline: 3px solid rgba(184,115,51,.35);
+    outline-offset: 3px;
+  }
+
+  /* Mobile : bouton un peu plus compact */
+  @media (max-width: 520px){
+    .blog-subscribe-floating{
+      right: 12px;
+      bottom: 12px;
+      padding: 11px 14px;
+      font-size: 13px;
+    }
+  }
+</style>

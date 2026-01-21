@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root{
+  /* Couleurs UpStrategia */
+  --brand-blue: #0A3D62;     /* Bleu pétrole */
+  --brand-copper: #D27A5A;   /* Cuivre / Corail */
+  --brand-sage: #A7C4B5;     /* Vert sauge */
+  --accent: #B87333; /* cuivre */
+
+  --bg-soft: #F2F5F6;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border-soft: rgba(15, 23, 42, 0.12);
+}
+
+/* (optionnel) petites améliorations globales */
+a {
+  text-decoration: none;
+}
+
+/* ====== Mise en forme des pages "texte" (mentions, confidentialité, articles) ====== */
+.prose {
+  max-width: 70ch;
+}
+
+.prose h1 {
+  margin: 0 0 0.9em 0;
+  line-height: 1.15;
+}
+
+.prose h2 {
+  margin: 1.6em 0 0.6em 0;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.prose p {
+  margin: 0.85em 0;
+  line-height: 1.7;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0.85em 0;
+  padding-left: 1.25em;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin: 0.35em 0;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose strong {
+  font-weight: 700;
+}

@@ -1,0 +1,239 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+
+const problems = [
+  "Prospection irrégulière : quand on est débordé, on arrête",
+  "Relances oubliées : pipeline instable et imprévisible",
+  "Suivi flou : informations éparpillées, pas de prochaine action visible",
+  "Discours trop long ou trop vague : peu de réponses",
+];
+
+const whatIDo = [
+  "Définir une routine tenable (cadence + canaux + objectifs réalistes)",
+  "Structurer un pipeline simple (étapes, critères, relances)",
+  "Préparer scripts et séquences (LinkedIn / email / téléphone) adaptés à vos cibles",
+  "Mettre en place un suivi propre (sans complexité inutile)",
+];
+
+const deliverables = [
+  "Process de prospection + cadence",
+  "Pipeline (étapes + règles de relance)",
+  "Scripts (accroche, relance, prise de RDV)",
+  "Séquences prêtes à l’emploi (selon canal)",
+];
+
+const faq = [
+  {
+    q: "Vous faites de la prospection agressive ?",
+    a: "Non. L’objectif est une prospection professionnelle, claire et régulière — sans harcèlement. On optimise surtout la constance et la qualité.",
+  },
+  {
+    q: "Je n’ai pas de base de prospects, on fait comment ?",
+    a: "On peut partir d’une base simple et la structurer. L’important : avoir un flux et un suivi (même minimal) avant d’ajouter de la complexité.",
+  },
+  {
+    q: "Est-ce que vous travaillez uniquement à Rennes ?",
+    a: `Je suis basée à ${geo.city} (${geo.region}). J’interviens principalement en visio partout en ${geo.country}.`,
+  },
+  {
+    q: "Combien de temps avant d’obtenir des RDV ?",
+    a: "Souvent, on obtient des signaux (réponses, échanges) rapidement une fois la routine posée. Le volume dépend du marché, de la cible et de l’offre.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((x) => ({
+    "@type": "Question",
+    name: x.q,
+    acceptedAnswer: { "@type": "Answer", text: x.a },
+  })),
+};
+
+// JSON-LD service (léger, utile SEO/IA)
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Prospection B2B & structuration du pipeline",
+  serviceType: "Prospection B2B, pipeline et relances",
+  provider: {
+    "@type": "Organization",
+    name: "UpStrategia",
+    url: SITE,
+  },
+  areaServed: geo.country,
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: `${SITE}/contact?from=expertise-prospection&diagnostic=1`,
+    availableLanguage: ["fr"],
+  },
+};
+---
+
+<Layout
+  title={`Prospection B2B & pipeline – relances et suivi – ${geo.city} | UpStrategia`}
+  description={`Prospection B2B : routine commerciale, relances propres, scripts, suivi et pipeline. Basée à ${geo.city} (${geo.region}), accompagnement en visio partout en ${geo.country}.`}
+  canonical="/expertises/prospection-b2b"
+>
+  {faqJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  )}
+
+  {serviceJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  )}
+
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- HERO -->
+    <section class="py-12 sm:py-16">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+        <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Expertise</p>
+
+        <h1 class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--brand-blue)]">
+          Prospection B2B : structurer un pipeline fiable, sans s’épuiser
+        </h1>
+
+        <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
+          Une prospection efficace, c’est rarement une question de “talent” : c’est une question de méthode,
+          de cadence et de relances.
+        </p>
+
+        <p class="mt-3 text-sm text-[var(--text-muted)]">
+          Concrètement : on met en place une routine commerciale tenable pour générer des échanges et des RDV
+          de façon régulière.
+        </p>
+
+        <p class="mt-4 text-sm text-[var(--text-muted)]">
+          Basée à <strong>{geo.city}</strong> ({geo.region}) — visio {geo.country}.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-prospection&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <!-- ✅ Portes d’entrée (prioritaires) -->
+          <a
+            href="/offres/relances-automatiques"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre Relances
+          </a>
+
+          <a
+            href="/offres/base-donnees-propre"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Voir l’offre Base propre
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNAUX -->
+    <section class="py-8 sm:py-10">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Signaux fréquents</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {problems.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CE QUE JE METS EN PLACE -->
+    <section class="py-12 sm:py-16">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Ce que je mets en place</h2>
+      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
+        L’objectif : passer d’une prospection “au feeling” à une routine tenable, lisible et pilotable.
+      </p>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+        {whatIDo.map((x) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <div class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <p class="text-sm text-[var(--text-muted)]">{x}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Livrables typiques</p>
+        <ul class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+          {deliverables.map((d) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-copper)]"></span>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-10 sm:py-12">
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Vous voulez une prospection régulière ?</h2>
+        <p class="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
+          On simplifie, on cadence, on stabilise. Et surtout : on s’assure que ça tient dans votre quotidien.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href="/contact?from=expertise-prospection&diagnostic=1"
+            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+          >
+            Faire le point (15 min)
+          </a>
+
+          <a
+            href="/offres/relances-automatiques"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Relances automatiques (propres)
+          </a>
+
+          <a
+            href="/expertises"
+            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
+          >
+            Retour aux expertises
+          </a>
+        </div>
+
+        <p class="mt-4 text-xs text-[var(--text-muted)]">
+          Basée à Rennes (Bretagne) — visio France entière. Réponse sous 48h (en général).
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="pb-16 pt-6">
+      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">FAQ</h2>
+      <div class="mt-6 space-y-3">
+        {faq.map((item) => (
+          <details class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+            <summary class="cursor-pointer list-none text-sm font-medium text-[var(--text-main)]">
+              {item.q}
+              <span class="float-right text-[var(--text-muted)] transition">⌄</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+
+const title = "Page introuvable (404) – UpStrategia";
+const description =
+  "Cette page n’existe pas ou a été déplacée. Revenez à l’accueil ou découvrez les offres CRM, relances et base de données.";
+---
+
+<Layout title={title} description={description} canonical="/404" noindex>
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+    <section class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
+      <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">Erreur 404</p>
+
+      <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
+        Cette page n’existe pas (ou plus)
+      </h1>
+
+      <p class="mt-4 max-w-3xl text-base sm:text-lg text-[var(--text-muted)]">
+        Pas de panique : voici les raccourcis utiles pour revenir à l’essentiel.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <a href="/" class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm hover:shadow-md transition">
+          <h2 class="text-base font-semibold text-[var(--brand-blue)]">Retour à l’accueil</h2>
+          <p class="mt-2 text-sm text-[var(--text-muted)]">Comprendre en 5 secondes ce que fait UpStrategia.</p>
+        </a>
+
+        <a href="/offres" class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm hover:shadow-md transition">
+          <h2 class="text-base font-semibold text-[var(--brand-blue)]">Voir les offres</h2>
+          <p class="mt-2 text-sm text-[var(--text-muted)]">CRM simple, relances propres, base de données exploitable.</p>
+        </a>
+
+        <a href="/contact?from=404&diagnostic=1" class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm hover:shadow-md transition">
+          <h2 class="text-base font-semibold text-[var(--brand-blue)]">Faire le point (15 min)</h2>
+          <p class="mt-2 text-sm text-[var(--text-muted)]">Une prochaine étape claire, sans usine à gaz.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>
