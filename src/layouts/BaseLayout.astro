@@ -9,12 +9,6 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-
-// Identifiants stables (utiles pour relier les schemas entre eux)
-const siteUrl = "https://www.upstrategia.fr";
-const orgId = `${siteUrl}/#organization`;
-const websiteId = `${siteUrl}/#website`;
-const serviceId = `${siteUrl}/#professionalservice`;
 ---
 
 <!doctype html>
@@ -26,79 +20,10 @@ const serviceId = `${siteUrl}/#professionalservice`;
     <title>{title}</title>
     <meta name="description" content={description} />
 
-    <!-- ✅ Pas de canonical ici (source de vérité = layout principal) -->
-
-    <!-- OpenGraph minimum (le reste peut être géré dans un layout/head plus complet) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-
     <link rel="icon" href="/favicon.svg" />
 
-    <!-- Schema.org : Organization + WebSite (base) -->
-    <script type="application/ld+json">
-      {JSON.stringify({
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Organization",
-            "@id": orgId,
-            "name": "UpStrategia",
-            "url": siteUrl,
-            "logo": `${siteUrl}/images/logo-upstrategia.png`,
-            "email": "contact@upstrategia.fr",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Rennes",
-              "addressRegion": "Bretagne",
-              "postalCode": "35000",
-              "addressCountry": "FR"
-            },
-            "areaServed": "FR",
-            "sameAs": [
-              "https://www.linkedin.com/in/carole-ych%C3%A9/"
-            ]
-          },
-          {
-            "@type": "WebSite",
-            "@id": websiteId,
-            "url": siteUrl,
-            "name": "UpStrategia",
-            "publisher": { "@id": orgId },
-            "inLanguage": "fr-FR"
-          }
-        ]
-      })}
-    </script>
-
-    <!-- Schema.org : ProfessionalService (pour SEO local / GEO) -->
-    <script type="application/ld+json">
-      {JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "@id": serviceId,
-        "name": "UpStrategia",
-        "url": `${siteUrl}/`,
-        "description": "Consultante en stratégie marketing et business development, spécialisée en CRM simple, automatisation des relances et structuration de bases de données pour TPE/PME B2B.",
-        "provider": { "@id": orgId },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Rennes",
-          "addressRegion": "Bretagne",
-          "postalCode": "35000",
-          "addressCountry": "FR"
-        },
-        "areaServed": [
-          { "@type": "AdministrativeArea", "name": "Rennes" },
-          { "@type": "AdministrativeArea", "name": "Ille-et-Vilaine" },
-          { "@type": "AdministrativeArea", "name": "Bretagne" },
-          { "@type": "Country", "name": "France" }
-        ],
-        "sameAs": [
-          "https://www.linkedin.com/in/carole-ych%C3%A9/"
-        ]
-      })}
-    </script>
+    <!-- Si une page qui utilise BaseLayout a besoin d'un head spécifique, on le passe ici -->
+    <slot name="head" />
   </head>
 
   <body class="min-h-screen flex flex-col bg-white text-slate-900 antialiased">
