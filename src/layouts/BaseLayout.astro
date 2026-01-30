@@ -27,6 +27,31 @@ const currentPath = Astro.url.pathname;
     <meta property="og:description" content={description} />
 
     <link rel="icon" href="/favicon.svg" />
+  <script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "UpStrategia",
+  "url": "https://www.upstrategia.fr/",
+  "description": "Consultante en stratégie marketing et business development, spécialisée en CRM simple, automatisation des relances et structuration de bases de données pour TPE/PME B2B.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Rennes",
+    "addressRegion": "Bretagne",
+    "postalCode": "35000",
+    "addressCountry": "FR"
+  },
+  "areaServed": [
+    { "@type": "AdministrativeArea", "name": "Rennes" },
+    { "@type": "AdministrativeArea", "name": "Ille-et-Vilaine" },
+    { "@type": "AdministrativeArea", "name": "Bretagne" },
+    { "@type": "Country", "name": "France" }
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/carole-ych%C3%A9/"
+  ]
+})}
+</script>
   </head>
 
   <body class="min-h-screen flex flex-col bg-white text-slate-900 antialiased">
