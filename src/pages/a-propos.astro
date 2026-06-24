@@ -1,16 +1,32 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import FAQ from "../components/FAQ.astro";
+import Section from "../components/Section.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import ButtonLink from "../components/ButtonLink.astro";
+import Container from "../components/Container.astro";
+import IdentityBlock from "../components/IdentityBlock.astro";
+import {
+  buildBreadcrumbSchema,
+  buildPersonSchema,
+  buildFaqSchema,
+  ORGANIZATION_ID,
+  PERSON_ID,
+} from "../lib/schema";
 
 const geo = { city: "Rennes", region: "Bretagne", country: "France" };
+const SITE = "https://www.upstrategia.fr";
+const canonical = "/a-propos";
+const pageUrl = `${SITE}${canonical}`;
 
 const principles = [
   {
-    title: "On commence par l’essentiel",
+    title: "On commence par l'essentiel",
     text: "Suivi, relances, base de contacts : tant que les bases ne tiennent pas, le reste ne tient pas non plus.",
   },
   {
     title: "Simple, mais carré",
-    text: "Un CRM simple, des prochaines actions visibles, et une routine réaliste. Pas d’usine à gaz.",
+    text: "Un CRM simple, des prochaines actions visibles, et une routine réaliste. Pas d'usine à gaz.",
   },
   {
     title: "Zéro jargon",
@@ -18,141 +34,439 @@ const principles = [
   },
   {
     title: "Automatiser seulement si ça aide vraiment",
-    text: "Rappels, relances, petites automatisations : uniquement si c’est utile, maîtrisé et mesurable.",
+    text: "Rappels, relances, petites automatisations : uniquement si c'est utile, maîtrisé et mesurable.",
+  },
+];
+
+const services = [
+  {
+    title: "Clarifier l'offre et les priorités",
+    text: "Rendre le message plus compréhensible, hiérarchiser les sujets utiles et éviter les actions marketing dispersées.",
+    links: [],
+  },
+  {
+    title: "Structurer le suivi commercial",
+    text: "Rendre les opportunités visibles, cadrer les relances et repartir d'une base exploitable.",
+    links: [
+      { href: "/offres/base-donnees-propre", label: "Base de données propre" },
+      { href: "/offres/relances-automatiques", label: "Relances automatiques" },
+    ],
+  },
+  {
+    title: "Mettre en place un CRM simple",
+    text: "Créer un cadre utile pour suivre les opportunités, sans outil lourd ni champs inutiles.",
+    links: [{ href: "/offres/crm-simple", label: "CRM simple" }],
+  },
+  {
+    title: "Automatiser ou améliorer la visibilité IA",
+    text: "Améliorer seulement ce qui est pertinent : rappels, petites automatisations ou compréhension du site par les moteurs IA.",
+    links: [],
+  },
+];
+
+const experienceFacts = [
+  {
+    value: "15 ans",
+    label: "d'expérience en marketing, développement commercial et projets B2B",
+  },
+  {
+    value: "+60 %",
+    label: "de leads générés en un an dans une expérience marketing B2B précédente",
+  },
+  {
+    value: "22",
+    label: "commerciaux accompagnés ou coordonnés dans le pilotage et les outils",
+  },
+  {
+    value: "TPE / PME",
+    label: "accompagnées sur des sujets de suivi, CRM, prospection et organisation",
+  },
+];
+
+const fieldObservations = [
+  "Des devis suivis entre Excel, Outlook, un logiciel métier et la mémoire du dirigeant.",
+  "Des contacts dispersés dans plusieurs fichiers, exports, boîtes mail ou bases partielles.",
+  "Des relances qui dépendent de la disponibilité de chacun, sans règle claire ni rappel fiable.",
+  "Des CRM déjà en place, mais trop lourds, incomplets ou peu utilisés au quotidien.",
+  "Des demandes qui arrivent de plusieurs canaux sans vue globale sur les priorités commerciales.",
+];
+
+const toolGroups = [
+  {
+    title: "CRM / suivi",
+    text: "HubSpot, Folk, CRM simples, pipeline.",
+  },
+  {
+    title: "Données",
+    text: "Excel, Google Sheets, nettoyage, reporting.",
+  },
+  {
+    title: "Automatisation",
+    text: "n8n, Make, Zapier, assistants IA.",
+  },
+  {
+    title: "Visibilité",
+    text: "SEO, référencement IA, ChatGPT, Perplexity, Gemini.",
   },
 ];
 
 const who = {
   for: [
     "Dirigeants de TPE / PME B2B qui manquent de temps",
-    "Entreprises avec des contacts éparpillés (Excel, mails, outils différents)",
-    "Structures qui veulent un suivi commercial clair (sans outil compliqué)",
+    "Entreprises avec des contacts éparpillés entre Excel, mails et outils différents",
+    "Structures qui veulent un suivi commercial clair, sans outil compliqué",
+    "Entreprises qui veulent être citées dans ChatGPT, Perplexity ou Gemini quand leurs prospects posent des questions",
   ],
   notFor: [
-    "Les “promesses miracle” ou les méthodes copiées-collées",
-    "Les projets sans objectif business (contact, RDV, relances, pipeline)",
-    "L’automatisation à tout prix (sans base solide)",
+    "Les promesses miracle ou les méthodes copiées-collées",
+    "Les projets sans objectif business concret : rendez-vous, relances, pipeline, visibilité",
+    "L'automatisation à tout prix, sans base solide ni méthode",
   ],
 };
 
 const steps = [
   {
-    title: "1) On clarifie",
-    text: "Votre situation, vos priorités, et ce qui bloque vraiment (suivi, relances, base, messages).",
+    title: "On clarifie",
+    text: "Votre situation, vos priorités, et ce qui bloque vraiment : suivi, relances, base, messages, organisation.",
   },
   {
-    title: "2) On structure",
-    text: "Un minimum efficace : pipeline lisible, prochaines actions, et un système qui tient au quotidien.",
+    title: "On structure",
+    text: "Un minimum efficace : pipeline lisible, prochaines actions visibles, base propre, et un système tenable au quotidien.",
   },
   {
-    title: "3) On active",
-    text: "Mise en place (CRM simple / relances / base) + messages courts prêts à l’emploi.",
+    title: "On active",
+    text: "Mise en place : CRM simple, relances, base de données, messages courts, priorités d'action.",
   },
   {
-    title: "4) On stabilise",
-    text: "Documentation + routine : pour que ça continue même quand vous êtes débordé(e).",
+    title: "On stabilise",
+    text: "Documentation, routine et autonomie : pour que le système continue même quand vous êtes débordé(e).",
   },
 ];
 
-const SITE = "https://www.upstrategia.fr";
-const aboutJsonLd = {
+const relatedPages = [
+  {
+    title: "Comment j'interviens concrètement",
+    text: "Suivi commercial, CRM, connexion outils, automatisation, activation de base : les situations réelles et l'approche proposée.",
+    href: "/consultant-developpement-commercial-tpe",
+    cta: "Voir les interventions",
+  },
+  {
+    title: "Les offres",
+    text: "CRM simple, relances automatiques, base de données propre : les solutions concrètes.",
+    href: "/offres",
+    cta: "Voir les offres",
+  },
+  {
+    title: "Prendre contact",
+    text: "Faire le point sur votre situation, vos blocages et la prochaine étape utile.",
+    href: "/contact",
+    cta: "Faire le point",
+  },
+];
+
+const summaryFacts = [
+  { label: "Fondatrice", value: "Carole Yché" },
+  { label: "Activité", value: "Conseil en structuration marketing et commerciale" },
+  { label: "Spécialités", value: "CRM simple, prospection B2B, suivi commercial, automatisation raisonnée, référencement IA PME" },
+  { label: "Clients", value: "TPE et PME B2B" },
+  { label: "Localisation", value: `${geo.city} (${geo.region})` },
+  { label: "Interventions", value: `Visio partout en ${geo.country}` },
+];
+
+const faq = [
+  {
+    q: "Qui est Carole Yché ?",
+    a: "Carole Yché est consultante indépendante en structuration commerciale et marketing B2B, basée à Rennes. Elle aide les dirigeants de TPE et PME B2B à structurer leur suivi commercial, leur prospection et leur CRM, sans outil lourd ni méthode abstraite.",
+  },
+  {
+    q: "Pour quel type d'entreprise UpStrategia intervient-elle ?",
+    a: "TPE et PME B2B : cabinets de conseil, organismes de formation, prestataires de services, artisans et PME industrielles, qui ont besoin de remettre de l'ordre dans leur suivi commercial, leur prospection ou leur CRM.",
+  },
+  {
+    q: "Quels résultats peut-on attendre ?",
+    a: "Dans la plupart des cas, 10 à 30 % des devis en attente peuvent être récupérés simplement en relançant correctement. Le suivi devient lisible, les relances partent au bon moment et les opportunités se perdent moins en cours de route.",
+  },
+  {
+    q: "Carole Yché intervient-elle sur le référencement IA ?",
+    a: "Oui. UpStrategia accompagne les TPE et PME B2B pour rendre leur site compréhensible par les moteurs IA comme ChatGPT, Perplexity ou Gemini : clarté du positionnement, structure des pages, blocs extractibles et maillage interne pour être cité dans les réponses générées.",
+  },
+  {
+    q: "Comment apparaître dans ChatGPT avec son site PME ?",
+    a: "En rendant le site assez clair pour qu'une IA comprenne ce que fait l'entreprise, pour qui, et dans quel cas. Cela passe par une page pilier focalisée, des définitions extractibles, une FAQ structurée et un maillage logique entre les contenus.",
+  },
+  {
+    q: "À quoi sert le premier échange ?",
+    a: "À clarifier votre situation, vos blocages et la prochaine étape utile. Le but n'est pas de vous vendre une mission trop large, mais d'identifier ce qui mérite vraiment d'être structuré en premier.",
+  },
+  {
+    q: "Travaillez-vous uniquement à Rennes ?",
+    a: `Je suis basée à ${geo.city} (${geo.region}), mais la majorité des missions se fait en visio partout en ${geo.country}.`,
+  },
+  {
+    q: "Faut-il déjà avoir un CRM ou des outils en place ?",
+    a: "Non. On peut partir d'un existant très simple, voire d'un fonctionnement encore dispersé. L'objectif est justement de remettre de l'ordre avant d'ajouter de la complexité.",
+  },
+  {
+    q: "Est-ce adapté à une petite structure ?",
+    a: "Oui. L'approche est pensée pour les TPE et PME qui ont besoin d'un système simple, lisible et réellement tenable au quotidien.",
+  },
+  {
+    q: "Comment contacter Carole Yché ?",
+    a: "Via la page contact d'UpStrategia : https://www.upstrategia.fr/contact. Premier échange de 15 minutes pour clarifier la situation, sans engagement.",
+  },
+];
+
+const pageTitle = `Carole Yché | Développement commercial, CRM et IA`;
+const pageDescription = `Découvrez le parcours, l'approche et les domaines d'expertise de Carole Yché, fondatrice d'UpStrategia, consultante en développement commercial, CRM et IA.`;
+
+const aboutPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   name: "À propos - UpStrategia",
-  url: `${SITE}/a-propos`,
+  url: pageUrl,
+  mainEntity: {
+    "@id": PERSON_ID
+  },
   about: {
-    "@type": "Organization",
-    name: "UpStrategia",
-    url: SITE,
-    areaServed: "FR",
+    "@id": ORGANIZATION_ID,
   },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: geo.city,
-    addressRegion: geo.region,
-    addressCountry: geo.country,
-  },
+  inLanguage: "fr-FR",
 };
+
+const personJsonLd = buildPersonSchema({
+  site: SITE,
+  name: "Carole Yché",
+  jobTitle: "Consultante en structuration marketing, commerciale et référencement IA",
+  description:
+    "Consultante indépendante spécialisée en structuration marketing, prospection B2B, CRM simple, suivi commercial, automatisation raisonnée et référencement IA pour TPE et PME B2B.",
+  image: `${SITE}/images/carole-yche.webp`,
+  sameAs: ["https://www.linkedin.com/in/carole-yche/"],
+});
+
+const faqJsonLd = buildFaqSchema(faq);
+
+const breadcrumbJsonLd = buildBreadcrumbSchema([
+  { name: "Accueil", item: `${SITE}/` },
+  { name: "À propos", item: pageUrl },
+]);
 ---
 
 <Layout
-  title={`À propos – UpStrategia : CRM simple, relances & base de données – ${geo.city}`}
-  description={`UpStrategia : une approche simple pour dirigeants de TPE/PME B2B. CRM simple, relances propres et base clients/prospects exploitable. Basée à ${geo.city} (${geo.region}), visio ${geo.country}.`}
-  canonical="/a-propos"
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
 >
-  {aboutJsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(aboutJsonLd)} />
-  )}
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(aboutPageJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  </Fragment>
 
   <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-
     <!-- HERO -->
-    <section class="py-12 sm:py-16">
+    <section class="py-10">
       <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-12">
         <div class="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
-
           <div>
             <p class="text-xs uppercase tracking-wide text-[var(--text-muted)]">
-              À propos — {geo.city} / {geo.region} — visio {geo.country}
+              À propos - {geo.city} / {geo.region} - visio {geo.country}
             </p>
 
-            <h1 class="mt-2 text-3xl sm:text-5xl font-semibold tracking-tight text-[var(--brand-blue)]">
-              Une approche simple et structurée pour ne plus perdre d’opportunités
+            <h1 class="mt-2 max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-[var(--brand-blue)] sm:text-4xl">
+              Carole Yché - UpStrategia :
+              <span class="block">
+                structurer simplement le marketing et le suivi commercial
+              </span>
             </h1>
 
-            <p class="mt-4 text-base sm:text-lg text-[var(--text-muted)]">
-              J’aide les dirigeants de <strong>TPE / PME B2B</strong> à remettre de l’ordre dans leur suivi commercial :
-              <strong> CRM simple</strong>, <strong>relances propres</strong>, <strong>base de contacts exploitable</strong>.
-              Sans jargon, sans outil compliqué, avec une mise en place réaliste.
+            <p class="mt-4 text-base text-[var(--text-muted)] sm:text-lg">
+              J'aide les dirigeants de <strong>TPE / PME B2B</strong> à remettre de l'ordre dans leur développement commercial :
+              <strong> marketing plus clair</strong>, <strong>prospection mieux structurée</strong>,
+              <strong> CRM simple</strong>, <strong>relances propres</strong>,
+              <strong> base de contacts exploitable</strong> et
+              <strong> visibilité dans les moteurs IA</strong>.
             </p>
 
-            <div class="mt-7 flex flex-wrap gap-3">
+            <p class="mt-4 text-sm text-[var(--text-muted)]">
+              L'objectif n'est pas d'ajouter des outils pour ajouter des outils. On clarifie d'abord ce qui bloque vraiment, puis on met en place une suite simple et utile.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+              <h2 class="text-sm font-semibold text-[var(--brand-blue)]">
+                La méthode UpStrategia en 4 étapes
+              </h2>
+              <p class="mt-2 text-sm text-[var(--text-muted)]">
+                Un système commercial structuré progresse dans un ordre logique :
+              </p>
+              <ol class="mt-3 space-y-2 text-sm text-[var(--text-muted)]">
+                <li><strong class="text-[var(--brand-blue)]">Alimenter</strong> - faire entrer des opportunités qualifiées</li>
+                <li><strong class="text-[var(--brand-blue)]">Piloter</strong> - savoir qui relancer et quoi prioriser</li>
+                <li><strong class="text-[var(--brand-blue)]">Exécuter</strong> - faire tenir le suivi au quotidien avec un CRM simple</li>
+                <li><strong class="text-[var(--brand-blue)]">Optimiser</strong> - automatiser seulement ce qui mérite de l'être</li>
+              </ol>
+              <p class="mt-3 text-sm text-[var(--text-muted)]">
+                La plupart des TPE bloquent à l'étape Piloter : les opportunités existent mais se perdent faute de suivi.
+              </p>
               <a
-                href="/contact?from=a-propos&diagnostic=1"
-                class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
+                href="/methode-upstrategia"
+                class="mt-3 inline-flex text-sm font-medium text-[var(--brand-copper)] hover:underline"
               >
-                Faire le point (15 min)
-              </a>
-              <a
-                href="/offres"
-                class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-white px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
-              >
-                Voir les offres
+                Voir la méthode complète →
               </a>
             </div>
 
+            <p class="mt-4 text-sm text-[var(--text-muted)]">
+              Premier échange : on clarifie vos blocages, vos priorités et la prochaine étape utile. Pas de jargon, pas de détour.
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <ButtonLink href="/offres" variant="primary">
+                Voir les offres les plus utiles selon votre situation
+              </ButtonLink>
+              <ButtonLink href="/contact?from=a-propos&diagnostic=1" variant="secondary">
+                Faire le point (15 min)
+              </ButtonLink>
+            </div>
+
             <p class="mt-4 text-xs text-[var(--text-muted)]">
-              Réponse sous 48h (en général). Basée à {geo.city}.
+              Réponse sous 48h en général. Basée à {geo.city}.
             </p>
           </div>
 
-          <!-- PHOTO -->
           <aside class="rounded-3xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
             <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-black/5">
               <img
-                src="/images/carole-yche.PNG"
-                alt="Carole Yché - consultante UpStrategia"
+                src="/images/carole-yche.webp"
+                alt="Carole Yché, fondatrice d'UpStrategia, consultante en structuration marketing, commerciale et référencement IA pour TPE et PME B2B"
+                width="1024"
+                height="1280"
                 class="h-full w-full object-cover"
-                loading="lazy"
+                loading="eager"
+                decoding="async"
               />
             </div>
 
             <div class="mt-5">
               <p class="text-sm font-semibold text-[var(--brand-blue)]">Carole Yché</p>
               <p class="mt-1 text-sm text-[var(--text-muted)]">
-                Marketing B2B & structuration du suivi commercial (CRM, relances, base de données).
+                Marketing B2B, prospection, CRM simple, suivi commercial, automatisation raisonnée et référencement IA PME.
               </p>
             </div>
           </aside>
-
         </div>
       </div>
     </section>
 
+    <Section>
+      <IdentityBlock variant="full" showLink={false} />
+    </Section>
+
+    <!-- RÉSUMÉ RAPIDE -->
+    <Section>
+      <Container className="p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
+          UpStrategia en résumé
+        </h2>
+
+        <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
+          Les repères essentiels pour situer UpStrategia, les sujets traités et les contextes d'intervention.
+        </p>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          {summaryFacts.map((item) => (
+            <div class="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-5">
+              <p class="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                {item.label}
+              </p>
+              <p class="mt-2 text-sm text-[var(--text-main)]">
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+
+    <!-- REPÈRES D'EXPÉRIENCE -->
+    <Section>
+      <Container className="p-8 sm:p-10">
+        <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-[var(--brand-copper)]">
+              Expérience terrain
+            </p>
+            <h2 class="mt-2 text-2xl font-semibold text-[var(--brand-blue)]">
+              Quelques repères
+            </h2>
+            <div class="mt-4 space-y-4 text-sm leading-relaxed text-[var(--text-muted)]">
+              <p>
+                Avant de créer UpStrategia, j'ai passé plus de 15 ans à travailler sur des sujets de marketing,
+                génération de leads, développement commercial et structuration de l'activité dans des environnements B2B.
+              </p>
+              <p>
+                Au fil des missions, j'ai observé les mêmes difficultés revenir : contacts dispersés entre plusieurs outils,
+                relances oubliées, CRM peu utilisés, données incomplètes ou manque de visibilité sur les opportunités en cours.
+              </p>
+              <p>
+                Mon constat est simple : dans beaucoup de petites structures, le problème n'est pas l'absence d'opportunités.
+                C'est la difficulté à les suivre de façon régulière et exploitable dans le temps.
+              </p>
+              <p>
+                Pour voir des exemples concrets de situations traitées :
+                <a href="/realisations" class="font-medium text-[var(--brand-copper)] underline">
+                  consulter les réalisations →
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {experienceFacts.map((item) => (
+              <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+                <p class="text-2xl font-semibold text-[var(--brand-blue)]">{item.value}</p>
+                <p class="mt-2 text-sm leading-relaxed text-[var(--text-muted)]">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </Section>
+
+    <!-- CE QUE JE FAIS -->
+    <Section>
+      <SectionTitle
+        title="Ce que je fais concrètement"
+        intro="UpStrategia ne vend pas des discours vagues. J'interviens sur des sujets précis, directement liés au suivi commercial, à l'organisation du développement commercial et à la visibilité IA."
+        introClass="mt-2 max-w-3xl text-sm text-[var(--text-muted)]"
+      />
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {services.map((item) => (
+          <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+            <h3 class="text-sm font-semibold text-[var(--brand-blue)]">{item.title}</h3>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{item.text}</p>
+            {item.links && (
+              <div class="mt-4 flex flex-wrap gap-x-3 gap-y-2">
+                {item.links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="text-sm font-medium text-[var(--brand-copper)] hover:underline"
+                  >
+                    {link.label} →
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </Section>
+
     <!-- POUR QUI / PAS POUR QUI -->
-    <section class="py-12 sm:py-16">
+    <Section>
       <div class="grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <Container className="p-6">
           <h2 class="text-xl font-semibold text-[var(--brand-blue)]">Pour qui ?</h2>
           <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
             {who.for.map((x) => (
@@ -162,9 +476,9 @@ const aboutJsonLd = {
               </li>
             ))}
           </ul>
-        </div>
+        </Container>
 
-        <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <Container className="p-6">
           <h2 class="text-xl font-semibold text-[var(--brand-blue)]">Pas adapté si…</h2>
           <ul class="mt-4 space-y-2 text-sm text-[var(--text-muted)]">
             {who.notFor.map((x) => (
@@ -174,18 +488,33 @@ const aboutJsonLd = {
               </li>
             ))}
           </ul>
-        </div>
+        </Container>
       </div>
-    </section>
+    </Section>
 
-    <!-- POURQUOI / PRINCIPE -->
-    <section class="py-12 sm:py-16">
-      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Pourquoi cette approche ?</h2>
-      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
-        J’ai vu le même scénario revenir souvent : beaucoup d’efforts, mais un suivi commercial flou.
-        Les contacts sont dispersés, les relances arrivent trop tard, et on perd des opportunités “sans s’en rendre compte”.
-        L’objectif d’UpStrategia : remettre de la clarté et une structure simple, puis automatiser seulement si ça a du sens.
-      </p>
+    <!-- POURQUOI CETTE APPROCHE -->
+    <Section>
+      <SectionTitle title="Pourquoi cette approche ?" />
+
+      <div class="mt-4 max-w-4xl space-y-4 text-sm leading-relaxed text-[var(--text-muted)]">
+        <p>
+          J'ai souvent observé le même scénario : des entreprises investissent dans leur visibilité,
+          dans un site, dans LinkedIn, dans la prospection, parfois dans des outils…
+          mais continuent à perdre des opportunités parce que le suivi commercial reste flou.
+        </p>
+        <p>
+          Les contacts sont dispersés, les relances arrivent trop tard, le pipeline n'est pas vraiment tenu,
+          et les décisions se prennent avec une visibilité partielle.
+        </p>
+        <p>
+          UpStrategia est née de cette conviction simple :
+          <strong class="text-[var(--text-main)]"> avant d'ajouter plus, il faut structurer mieux</strong>.
+          D'abord clarifier. Ensuite organiser. Et seulement après, automatiser si cela a du sens.
+          <a href="/methode-upstrategia" class="ml-1 font-medium text-[var(--brand-copper)] underline">
+            Voir la méthode →
+          </a>
+        </p>
+      </div>
 
       <div class="mt-6 grid gap-4 sm:grid-cols-2">
         {principles.map((v) => (
@@ -195,14 +524,15 @@ const aboutJsonLd = {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
 
     <!-- METHODE -->
-    <section class="py-12 sm:py-16">
-      <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Comment je travaille</h2>
-      <p class="mt-2 max-w-3xl text-sm text-[var(--text-muted)]">
-        Une méthode simple : problème → solution simple → preuve → action.
-      </p>
+    <Section>
+      <SectionTitle
+        title="Comment je travaille"
+        intro="Une méthode simple : clarifier, structurer, activer, stabiliser."
+        introClass="mt-2 max-w-3xl text-sm text-[var(--text-muted)]"
+      />
 
       <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((s, idx) => (
@@ -217,52 +547,160 @@ const aboutJsonLd = {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
 
-    <!-- MINI PARCOURS (BREF) -->
-    <section class="py-12 sm:py-16">
-      <div class="rounded-3xl border border-[var(--border-soft)] bg-white p-8 sm:p-10 shadow-sm">
-        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Mon parcours (en bref)</h2>
-        <div class="mt-4 max-w-3xl space-y-4 text-sm leading-relaxed text-[var(--text-muted)]">
+    <!-- OBSERVATIONS TERRAIN -->
+    <Section>
+      <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
+        <div class="max-w-3xl">
+          <p class="text-xs font-semibold uppercase tracking-wide text-[var(--brand-copper)]">
+            Situations fréquentes
+          </p>
+          <h2 class="mt-2 text-2xl font-semibold text-[var(--brand-blue)]">
+            Ce que j'observe le plus souvent sur le terrain
+          </h2>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+            La plupart des entreprises que j'accompagne ne partent pas de zéro. Elles ont déjà des contacts,
+            des demandes, des devis, parfois même un CRM. Le problème vient souvent de la dispersion des informations
+            et du manque de routine claire pour savoir quoi relancer.
+          </p>
+        </div>
+
+        <div class="mt-6 grid gap-4 lg:grid-cols-2">
+          {fieldObservations.map((item) => (
+            <div class="rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-sm">
+              <p class="text-sm leading-relaxed text-[var(--text-muted)]">{item}</p>
+            </div>
+          ))}
+        </div>
+
+        <p class="mt-6 max-w-3xl text-sm leading-relaxed text-[var(--text-muted)]">
+          C'est généralement à ce moment-là qu'un système plus simple, plus visible et plus régulier devient utile.
+          L'objectif n'est pas de tout refaire, mais de rendre les opportunités existantes plus faciles à suivre.
+          <a href="/realisations" class="ml-1 font-medium text-[var(--brand-copper)] underline">
+            Voir les exemples concrets →
+          </a>
+        </p>
+      </div>
+    </Section>
+
+    <!-- PARCOURS -->
+    <Section>
+      <Container className="p-8 sm:p-10">
+        <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">Mon parcours, en bref</h2>
+        <div class="mt-4 max-w-4xl space-y-4 text-sm leading-relaxed text-[var(--text-muted)]">
           <p>
-            J’ai travaillé sur des sujets marketing & business en B2B, avec une obsession : relier la stratégie à l’exécution.
-            Quand les bases (suivi, relances, contacts) sont claires, le marketing devient plus efficace — et surtout, tenable.
+            Mon fil rouge, c'est de relier la stratégie à l'exécution.
+            Pas la stratégie théorique, mais celle qui sert à décider, prioriser, suivre, relancer, et transformer.
           </p>
           <p>
-            Aujourd’hui, avec UpStrategia, j’accompagne des dirigeants qui veulent avancer sans se perdre dans des outils,
-            des méthodes “trop théoriques” ou des automatisations inutiles.
+            J'ai développé une approche ancrée dans le terrain B2B :
+            clarifier l'offre, structurer le marketing, remettre de l'ordre dans la prospection,
+            mettre en place un CRM simple, fiabiliser les relances, organiser les données utiles
+            et rendre le site compréhensible par les moteurs IA.
+            <a href="/consultant-developpement-commercial-tpe" class="font-medium text-[var(--brand-copper)] underline">
+              Voir les situations concrètes sur lesquelles j'interviens →
+            </a>
+          </p>
+          <p>
+            Aujourd'hui, avec UpStrategia, j'accompagne des dirigeants qui veulent avancer sans se perdre
+            dans des outils lourds, des méthodes trop abstraites, ou des automatisations inutiles.
+          </p>
+          <p>
+            Depuis Rennes, j'accompagne des TPE et PME B2B, en Bretagne comme partout en France en visio :
+            services, conseil, formation, artisans, cabinets ou PME qui veulent structurer leur suivi commercial
+            sans s'équiper d'outils lourds.
           </p>
         </div>
 
         <div class="mt-7 flex flex-wrap gap-3">
-          <a
-            href="/contact?from=a-propos&diagnostic=1"
-            class="inline-flex items-center justify-center rounded-full bg-[var(--brand-copper)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
-          >
-            Faire le point (15 min)
-          </a>
-          <a
-            href="/offres"
-            class="inline-flex items-center justify-center rounded-full border border-[var(--border-soft)] bg-[var(--bg-soft)] px-6 py-3 text-sm font-medium text-[var(--text-main)] hover:bg-black/5"
-          >
-            Découvrir les offres
-          </a>
+          <ButtonLink href="/offres" variant="primary">
+            Voir les offres les plus utiles selon votre situation
+          </ButtonLink>
+          <ButtonLink href="/realisations" variant="secondary">
+            Voir les réalisations
+          </ButtonLink>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
 
-    <!-- GEO (utile SEO local) -->
-    <section class="pb-16 pt-2">
+    <!-- OUTILS ET ENVIRONNEMENTS -->
+    <Section>
+      <SectionTitle
+        title="Outils, environnements et sujets maîtrisés"
+        intro="Je travaille principalement sur des environnements déjà en place, sans imposer de changement lourd lorsque ce n'est pas nécessaire."
+        introClass="mt-2 max-w-3xl text-sm text-[var(--text-muted)]"
+      />
+
+      <div class="mt-6 rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm">
+        <ul class="grid gap-3 text-sm text-[var(--text-muted)] sm:grid-cols-2">
+        {toolGroups.map((item) => (
+          <li>
+            <strong class="text-[var(--brand-blue)]">{item.title} :</strong> {item.text}
+          </li>
+        ))}
+        </ul>
+      </div>
+    </Section>
+
+    <!-- FAQ -->
+    <Section id="faq">
+      <FAQ items={faq} />
+    </Section>
+
+    <!-- LIENS UTILES -->
+    <Section>
+      <SectionTitle
+        title="Les pages utiles pour mieux comprendre mon approche"
+        intro="Si vous voulez voir plus concrètement comment je travaille, voici les meilleures portes d'entrée."
+        introClass="mt-2 max-w-3xl text-sm text-[var(--text-muted)]"
+      />
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
+        {relatedPages.map((item) => (
+          <a
+            href={item.href}
+            class="group rounded-2xl border border-[var(--border-soft)] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <h3 class="text-base font-semibold text-[var(--brand-blue)]">{item.title}</h3>
+            <p class="mt-3 text-sm text-[var(--text-muted)]">{item.text}</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--brand-copper)] group-hover:underline">
+              {item.cta} →
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="mt-6 max-w-3xl text-sm text-[var(--text-muted)]">
+        Vous pouvez aussi consulter la page
+        <a
+          href="/expertises"
+          class="ml-1 font-medium text-[var(--brand-copper)] underline"
+        >
+          expertises
+        </a>
+        pour voir plus en détail les sujets sur lesquels j'interviens, ou la page
+        <a
+          href="/referencement-ia-pme"
+          class="ml-1 font-medium text-[var(--brand-copper)] underline"
+        >
+          référencement IA pour PME
+        </a>
+        pour comprendre comment rendre votre site visible dans ChatGPT et Perplexity.
+      </p>
+    </Section>
+
+    <!-- GEO -->
+    <Section className="pb-16 pt-2">
       <div class="rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-soft)] p-8 sm:p-10">
         <h2 class="text-2xl font-semibold text-[var(--brand-blue)]">
-          Basée à {geo.city} ({geo.region}) — interventions {geo.country}
+          Basée à {geo.city} ({geo.region}) - interventions partout en {geo.country}
         </h2>
         <p class="mt-3 max-w-3xl text-sm text-[var(--text-muted)]">
           La majorité des missions se fait en visio partout en France.
           Si vous êtes à {geo.city} et alentours, on peut aussi envisager du présentiel selon le projet.
         </p>
       </div>
-    </section>
-
+    </Section>
   </main>
 </Layout>

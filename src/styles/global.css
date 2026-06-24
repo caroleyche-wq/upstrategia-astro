@@ -1,37 +1,78 @@
 @import "tailwindcss";
 
-:root{
-  /* Couleurs UpStrategia */
-  --brand-blue: #0A3D62;     /* Bleu pétrole */
-  --brand-copper: #D27A5A;   /* Cuivre / Corail */
-  --brand-sage: #A7C4B5;     /* Vert sauge */
-  --accent: #B87333; /* cuivre */
+/* ===== Variables UpStrategia ===== */
+:root {
+  /* Couleurs */
+  --brand-blue: #0A3D62;
+  --brand-copper: #2D6A4F;
+  --brand-sage: #A7C4B5;
+  --brand-sage-light: #C9DCD1;
+  --brand-blue-gray: #CBD6DD;
+  --accent: #2D6A4F;
 
   --bg-soft: #F2F5F6;
-  --text-main: #0f172a;
+  --text-main: #0A3D62;
   --text-muted: #475569;
-  --border-soft: rgba(15, 23, 42, 0.12);
+  --border-soft: rgba(10, 61, 98, 0.12);
+
+  /* Typographies */
+  --font-title: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Rayons */
+  --radius-card: 16px;
+  --radius-btn: 20px;
 }
 
-/* (optionnel) petites améliorations globales */
+/* ===== Base ===== */
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2 {
+  font-family: var(--font-title);
+  font-weight: 600;
+}
+
+h3 {
+  font-family: var(--font-title);
+  font-weight: 500;
+}
+
 a {
   text-decoration: none;
 }
 
-/* ====== Mise en forme des pages "texte" (mentions, confidentialité, articles) ====== */
+:where(a[href], button, summary):focus {
+  @apply ring-2 ring-[var(--brand-copper)] ring-offset-2;
+}
+
+:where(a[href], button, summary):focus-visible {
+  @apply outline-none ring-2 ring-[var(--brand-copper)] ring-offset-2;
+}
+
+/* ===== Prose (articles, mentions, pages texte) ===== */
 .prose {
   max-width: 70ch;
 }
 
 .prose h1 {
+  font-family: var(--font-title);
+  font-weight: 600;
   margin: 0 0 0.9em 0;
   line-height: 1.15;
 }
 
 .prose h2 {
+  font-family: var(--font-title);
+  font-weight: 600;
   margin: 1.6em 0 0.6em 0;
   line-height: 1.25;
-  font-weight: 700;
+}
+
+.prose h3 {
+  font-family: var(--font-title);
+  font-weight: 500;
 }
 
 .prose p {
@@ -64,5 +105,71 @@ a {
 }
 
 .prose strong {
-  font-weight: 700;
+  font-weight: 600;
+}
+
+/* ===== Tableaux dans les articles ===== */
+.prose table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  background: white;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.prose thead {
+  background: var(--bg-soft);
+}
+
+.prose th {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: var(--font-title);
+  color: var(--brand-blue);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.prose td {
+  padding: 0.85rem 1rem;
+  vertical-align: top;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(10, 61, 98, 0.08);
+}
+
+.prose tr:last-child td {
+  border-bottom: 0;
+}
+
+.prose tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.prose td:first-child {
+  font-weight: 500;
+  color: var(--brand-blue);
+}
+
+.prose table + p,
+.prose table + h2,
+.prose table + h3 {
+  margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.75rem 0.85rem;
+  }
 }
