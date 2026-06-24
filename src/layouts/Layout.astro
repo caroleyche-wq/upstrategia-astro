@@ -1,86 +1,135 @@
 ---
+import Analytics from "@vercel/analytics/astro";
+
 import "../styles/global.css";
 
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CookieBanner from "../components/CookieBanner.astro";
 import BlogSubscribeFloating from "../components/BlogSubscribeFloating.astro";
-
-const {
-  title = "UpStrategia – CRM simple, relances & base de données (TPE/PME B2B)",
-  description = "UpStrategia : CRM simple, relances propres (sans spam) et base clients/prospects exploitable. Basée à Rennes (Bretagne) – interventions France entière (visio).",
-  canonical, // optionnel : "/offres" ou "https://www.upstrategia.fr/offres"
-  ogImage, // optionnel : "/images/og.png" (sinon fallback)
-  noindex = false, // optionnel : pour des pages à ne pas indexer si besoin
-} = Astro.props;
+import { getOgImageUrl } from "../lib/og";
+import { ORGANIZATION_ID, PERSON_ID, WEBSITE_ID } from "../lib/schema";
 
 const SITE = "https://www.upstrategia.fr";
+const LOCALE = "fr-FR";
+const OG_LOCALE = "fr_FR";
 
-// Normalise : pas de slash final (sauf racine "/")
+const {
+  title = "UpStrategia - CRM simple, relances & base de données (TPE/PME B2B)",
+  description = "UpStrategia : CRM simple, relances propres (sans spam) et base clients/prospects exploitable. Basée à Rennes (Bretagne) - interventions France entière (visio).",
+  canonical,
+  ogImage,
+  ogType = "website",
+  noindex = false,
+} = Astro.props;
+
+// Normalise : pas de slash final sauf pour "/"
 function normalizePath(pathname: string) {
-  if (!pathname) return "/";
-  if (pathname === "/") return "/";
+  if (!pathname || pathname === "/") return "/";
   return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
 }
 
-// Construit un canonical PROPRE en https + sans query/hash
+// Construit un canonical propre, sans query string ni hash
 function buildCanonicalUrl() {
   if (canonical) {
-    // Si on reçoit une URL complète
     if (canonical.startsWith("http://") || canonical.startsWith("https://")) {
       const u = new URL(canonical);
       return `${SITE}${normalizePath(u.pathname)}`;
     }
-    // Si on reçoit un chemin type "/offres"
+
     return `${SITE}${normalizePath(canonical)}`;
   }
 
-  // Par défaut : la page courante
   return `${SITE}${normalizePath(Astro.url.pathname)}`;
 }
 
 const canonicalUrl = buildCanonicalUrl();
 const currentPath = Astro.url.pathname;
 
-// OG image : fallback sur le logo existant
-const ogImageUrl = ogImage
-  ? (ogImage.startsWith("http") ? ogImage : `${SITE}${ogImage}`)
-  : `${SITE}/images/logo-upstrategia.png`;
+const ogImageUrl = getOgImageUrl({
+  site: SITE,
+  pathname: new URL(canonicalUrl).pathname,
+  ogImage,
+});
 
-// Schéma site-wide (Organization + WebSite)
+const robotsContent = noindex
+  ? "noindex, follow"
+  : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+
 const globalSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Organization",
-      "@id": `${SITE}/#organization`,
+      "@id": ORGANIZATION_ID,
       name: "UpStrategia",
       url: SITE,
-      logo: `${SITE}/images/logo-upstrategia.png`,
+      logo: `${SITE}/images/logo-upstrategia.webp`,
       email: "contact@upstrategia.fr",
-      areaServed: "FR",
+      areaServed: [
+      {
+     "@type": "City",
+    name: "Rennes",
+      },
+  {
+    "@type": "AdministrativeArea",
+    name: "Bretagne",
+  },
+  {
+    "@type": "Country",
+    name: "France",
+  },
+],
       address: {
         "@type": "PostalAddress",
         addressLocality: "Rennes",
         addressRegion: "Bretagne",
         addressCountry: "FR",
       },
+      founder: { "@id": PERSON_ID },
+      sameAs: ["https://www.linkedin.com/in/carole-yche/"],
     },
     {
       "@type": "WebSite",
-      "@id": `${SITE}/#website`,
+      "@id": WEBSITE_ID,
       url: SITE,
       name: "UpStrategia",
-      publisher: { "@id": `${SITE}/#organization` },
-      inLanguage: "fr-FR",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: `${SITE}/recherche?q={search_term_string}`,
-        "query-input": "required name=search_term_string",
-      },
+      publisher: { "@id": ORGANIZATION_ID },
+      inLanguage: LOCALE,
+    },
+    {
+      "@type": "Person",
+      "@id": PERSON_ID,
+      name: "Carole Yché",
+      url: `${SITE}/a-propos`,
+      image: `${SITE}/images/carole-yche.webp`,
+      jobTitle: "Consultante marketing B2B et organisation commerciale",
+      worksFor: { "@id": ORGANIZATION_ID },
+      sameAs: ["https://www.linkedin.com/in/carole-yche/"],
+      knowsAbout: [
+        "suivi commercial TPE",
+        "CRM TPE",
+        "développement commercial B2B",
+        "prospection B2B",
+        "automatisation utile",
+        "référencement IA",
+      ],
     },
   ],
 };
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${canonicalUrl}#webpage`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  inLanguage: LOCALE,
+  isPartOf: { "@id": WEBSITE_ID },
+  publisher: { "@id": ORGANIZATION_ID },
+};
+
 ---
 
 <!doctype html>
@@ -89,23 +138,45 @@ const globalSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Google Fonts : Poppins (titres) + Inter (texte) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+      />
+    </noscript>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {/* ✅ Robots : index par défaut, noindex uniquement si demandé */}
+   <meta name="robots" content={robotsContent} />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 
     <!-- OpenGraph -->
     <meta property="og:site_name" content="UpStrategia" />
-    <meta property="og:locale" content="fr_FR" />
-    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={OG_LOCALE} />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content="UpStrategia – CRM simple, relances & base de données" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -113,10 +184,27 @@ const globalSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <!-- Schema.org global -->
-    <script type="application/ld+json" set:html={JSON.stringify(globalSchema)} />
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(globalSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
 
-    <!-- GTM : chargé uniquement si consentement OK (ne dépose pas de cookies à lui seul) -->
+<!-- Microsoft Clarity : chargé uniquement si consentement OK -->
+<script is:inline>
+  (function () {
+    try {
+      var consent = localStorage.getItem("cookie-consent");
+      if (consent !== "accepted") return;
+
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "w28huakvvl");
+    } catch (e) {}
+  })();
+</script>
+
+    <!-- GTM : chargé uniquement si consentement OK -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
 
@@ -135,11 +223,11 @@ const globalSchema = {
             j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
             f.parentNode.insertBefore(j, f);
           })(window, document, "script", "dataLayer", "GTM-N9H8XCQ3");
-        } catch (e) {
-          // si localStorage indisponible, on ne charge rien
-        }
+        } catch (e) {}
       })();
     </script>
+
+    <link rel="author" href="/humans.txt" />
 
     <slot name="head" />
   </head>
@@ -147,15 +235,45 @@ const globalSchema = {
   <body class="min-h-screen flex flex-col bg-white text-slate-900 antialiased">
     <Header currentPath={currentPath} />
 
-    <main class="flex-1">
-      <slot />
-    </main>
+<div class="flex-1 pt-6">
+  <slot />
+</div>
 
     <Footer />
 
     <BlogSubscribeFloating />
 
     <CookieBanner />
+
+    <!-- ✅ Bouton "remonter en haut" (mobile) -->
+    <button
+      id="backToTop"
+      aria-label="Remonter en haut"
+class="fixed right-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-40 hidden rounded-full bg-[var(--brand-copper)] p-3 text-white shadow-lg transition hover:opacity-90 md:hidden"
+      type="button"
+    >
+      ↑
+    </button>
+
+    <!-- ✅ Script du bouton "remonter en haut" -->
+    <script is:inline defer>
+      (function () {
+        var btn = document.getElementById("backToTop");
+        if (!btn) return;
+
+        function toggleBtn() {
+          if (window.scrollY > 400) btn.classList.remove("hidden");
+          else btn.classList.add("hidden");
+        }
+
+        window.addEventListener("scroll", toggleBtn, { passive: true });
+        requestAnimationFrame(toggleBtn);
+
+        btn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      })();
+    </script>
 
     <!-- GTM noscript : injecté uniquement si consentement OK -->
     <script is:inline>
@@ -166,5 +284,7 @@ const globalSchema = {
         document.body.appendChild(ns);
       }
     </script>
+
+    <Analytics />
   </body>
 </html>
